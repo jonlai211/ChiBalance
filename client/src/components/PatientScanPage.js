@@ -68,7 +68,7 @@ const PatientScanPage = () => {
     };
 
     const submitPicture = async () => {
-        const res = await axios.post("http://localhost:4000/patientscan", { linkdownload })
+        const res = await axios.post("http://localhost:4000/patientscan", { userid, linkdownload })
         history.push('/diagnosis', {userid: userid})
     }
 

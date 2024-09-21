@@ -44,7 +44,9 @@ class SimpleCNN(nn.Module):
 
 
 model = SimpleCNN()
-model.load_state_dict(torch.load('server/src/model/cnn.pth'))
+# model.load_state_dict(torch.load('server/src/model/cnn.pth'))
+model.load_state_dict(torch.load('src/model/cnn.pth', map_location=torch.device('cpu')))
+
 model.eval()
 
 device = torch.device("cpu")
@@ -66,7 +68,7 @@ def predict(image_path):
         return categories[predicted.item()]
 
 
-base_options = python.BaseOptions(model_asset_path='server/src/model/face_landmarker_v2_with_blendshapes.task')
+base_options = python.BaseOptions(model_asset_path='src/model/face_landmarker_v2_with_blendshapes.task')
 options = vision.FaceLandmarkerOptions(base_options=base_options, output_face_blendshapes=True,
                                        output_facial_transformation_matrixes=True, num_faces=1)
 detector = vision.FaceLandmarker.create_from_options(options)
