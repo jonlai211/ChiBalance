@@ -4,23 +4,23 @@ import { useHistory } from "react-router-dom";
 
 const QuestionnairePage = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    name: "UserAgent",
     birthDate: {
-      month: "",
-      day: "",
-      year: "",
+      month: 1,
+      day: 1,
+      year: 1924,
     },
-    gender: "",
-    coldHeat: "",
-    sweating: "",
-    headBodyIssues: "",
-    bowelMovements: "",
-    diet: "",
-    chestAbdomenIssues: "",
-    hearingIssues: "",
-    thirst: "",
-    pastIllnesses: "",
-    knownCauses: "",
+    gender: "male",
+    coldHeat: "cold",
+    sweating: "yes",
+    headBodyIssues: "yes",
+    bowelMovements: "regular",
+    diet: "balanced",
+    chestAbdomenIssues: "yes",
+    hearingIssues: "yes",
+    thirst: "yes",
+    pastIllnesses: "none",
+    knownCauses: "none",
     additionalSymptoms: "",
     photo: null,
   });
@@ -60,7 +60,6 @@ const QuestionnairePage = () => {
     console.log(formData);
     history.push("/patientscan");
   };
-
   return (
     <div className="container">
       <h1>New Patient Questionnaire</h1>
@@ -121,18 +120,20 @@ const QuestionnairePage = () => {
             </select>
           </div>
 
-          <label style={{ marginLeft: "20px" }}>Gender:</label>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
+          <div class="gender-container">
+            <label style={{ marginLeft: "20px" }}>Gender:</label>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
         </div>
 
         <h2>Health Questions</h2>
