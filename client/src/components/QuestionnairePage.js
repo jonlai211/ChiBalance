@@ -281,15 +281,14 @@ const Questionnaire = () => {
         </label>
 
         <label>
-          If you have any additional symptoms that the doctor should know about,
-          please describe them:
+          (Optional) If you have any additional symptoms that the doctor should
+          know about, please describe them:
           <textarea
             name="additionalSymptoms"
             value={formData.additionalSymptoms}
             onChange={handleChange}
             placeholder="Describe your additional symptoms..."
             style={{ height: "100px", width: "100%" }} // 크기 조절
-            required
           />
         </label>
 
