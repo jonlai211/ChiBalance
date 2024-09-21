@@ -1,9 +1,15 @@
 .container {
-	padding: 20px;
+	padding: 30px;
+	text-align: left;
+
 }
 
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 20px;
+}
+
+select {
+margin-left: 10px;
 }
