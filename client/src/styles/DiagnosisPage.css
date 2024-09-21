@@ -1,0 +1,41 @@
+.diagnosis-page {
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+    display: flex;
+    height: 100%;
+    width: 100%;         
+}
+
+.diagnosis-page .center-item{
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;    
+    gap: 30px;
+    position: relative;   
+    width: 40%; 
+}
+
+.diagnosis-page .center-item .header {
+    width: 100%;               
+    max-width: 800px;          
+    text-align: center;        
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.diagnosis-page .center-item .content {
+    text-align: center;
+    flex: 0 0 auto;
+}
+.diagnosis-page .center-item .content .patient-diagnosis {
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+.diagnosis-page .center-item .body .patient-observation {
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+
