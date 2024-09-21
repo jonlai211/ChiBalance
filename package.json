@@ -1,0 +1,12 @@
+{
+  "name": "tongue-segmentation-and-classification",
+  "version": "1.0.0",
+  "description": "😁This project utilizes the SAM algorithm for segmenting tongues in images, followed by classification using ViT.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
