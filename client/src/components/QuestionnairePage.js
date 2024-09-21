@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styles from "../styles/Detail.module.css"; // 스타일 추가
+import styles from "../styles/QuestionnairePage.css"; // 스타일 추가
 
-const Questionnaire = () => {
+const QuestionnairePage = () => {
   const [formData, setFormData] = useState({
     name: "",
     birthDate: {
@@ -319,4 +319,4 @@ const Questionnaire = () => {
   );
 };
 
-export default Questionnaire;
+export default QuestionnairePage;
