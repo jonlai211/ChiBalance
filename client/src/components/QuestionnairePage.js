@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import styles from "../styles/QuestionnairePage.css"; // 스타일 추가
+import styles from "../styles/QuestionnairePage.module.css"; // 스타일 추가
+import { useHistory } from "react-router-dom";
 
 const QuestionnairePage = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const QuestionnairePage = () => {
   });
 
   const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
-
+  const history = useHistory();
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "month" || name === "day" || name === "year") {
@@ -56,7 +57,8 @@ const QuestionnairePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    alert("Submitted!");
+    // alert("Submitted!");
+    history.push('/patientscan')
   };
 
   return (
@@ -292,7 +294,7 @@ const QuestionnairePage = () => {
           />
         </label>
 
-        <label>
+        {/* <label>
           Upload Photo:
           <input
             type="file"
@@ -311,7 +313,7 @@ const QuestionnairePage = () => {
               style={{ width: "150px", height: "150px", objectFit: "cover" }}
             />
           </div>
-        )}
+        )} */}
 
         <button type="submit">Submit</button>
       </form>
