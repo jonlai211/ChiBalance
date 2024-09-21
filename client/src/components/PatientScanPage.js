@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import "../styles/PatientScanPage.css";
 
 const PatientScanPage = () => {
