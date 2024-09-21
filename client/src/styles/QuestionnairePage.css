@@ -26,24 +26,17 @@ h2 {
 	margin-bottom: 50px;
 }
 
-.birthdateGenderRow {
-	display: flex;
-	gap: 20px;
-	align-items: flex-start;
-	margin-bottom: 20px;
-}
 
-.birthdate-container {
+.birthdate-container,
+.gender-container {
 	display: flex;
-	gap: 10px;
-	width: 70%;
+	flex-direction: column;
+	flex:1;
 }
 
 .gender-container {
-	flex: 1;
+margin-left: 50px;
 }
-
-
 
 .form {
 	display: flex;
@@ -58,16 +51,18 @@ h2 {
 	/* 질문과 답변을 세로로 정렬 */
 }
 
+
 label {
 	margin: 10px 0;
 	margin-bottom: 5px;
 	font-weight: bold;
 	text-align: left;
 }
+
 input,
 select,
 textarea {
-	flex: 4;
+	flex: 1;
 	/* 답변 영역 비율 */
 	padding: 10px;
 	border: 1px solid #ccc;
@@ -83,6 +78,7 @@ textarea:focus {
 }
 
 input[type="text"],
+input[type="date"],
 select {
 	width: 100%;
 	padding: 10px;
@@ -104,4 +100,12 @@ button {
 
 button:hover {
 	background-color: #357bce;
+}
+
+.birthdateGenderRow {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: flex-start;
+	margin-bottom: 20px;
 }

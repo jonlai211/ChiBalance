@@ -5,11 +5,7 @@ import { useHistory } from "react-router-dom";
 const QuestionnairePage = () => {
   const [formData, setFormData] = useState({
     name: "UserAgent",
-    birthDate: {
-      month: 1,
-      day: 1,
-      year: 1924,
-    },
+    birthDate: "1924-01-01",
     gender: "male",
     coldHeat: "cold",
     sweating: "yes",
@@ -78,50 +74,17 @@ const QuestionnairePage = () => {
 
         <div className="form-group birthdateGenderRow">
           <div className="birthdate-container">
-            <label>Birthdate:</label>
-            <select
-              name="month"
-              value={formData.birthDate.month}
+            <label>Birth Date (YYYY-MM-DD):</label>
+            <input
+              type="date"
+              name="birthDate"
+              value={formData.birthDate}
               onChange={handleChange}
-              required
-            >
-              <option value="">Month</option>
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-            <select
-              name="day"
-              value={formData.birthDate.day}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Day</option>
-              {Array.from({ length: 31 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-            <select
-              name="year"
-              value={formData.birthDate.year}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Year</option>
-              {Array.from({ length: 100 }, (_, i) => (
-                <option key={2023 - i} value={2023 - i}>
-                  {2023 - i}
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
-          <div class="gender-container">
-            <label style={{ marginLeft: "20px" }}>Gender:</label>
+          <div className="gender-container">
+            <label>Gender:</label>
             <select
               name="gender"
               value={formData.gender}
