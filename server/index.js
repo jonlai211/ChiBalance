@@ -3,6 +3,7 @@ const cors = require('cors')
 const app = express()
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const { exec } = require('child_process');
 
 const port = 4000
 
@@ -57,4 +58,24 @@ app.post('/questionnaire', (req, res)=>{
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
+
+app.post('/predict-eye', (req, res) => {
+    const { imagePath } = req.body;  // Image path from the frontend
+
+    exec(`python3 server/src/predict_eye.py ${imagePath}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing script: ${error.message}`);
+            return res.status(500).send('Error occurred while executing Python script');
+        }
+
+        if (stderr) {
+            console.error(`Script error output: ${stderr}`);
+        }
+
+        console.log(`Python script output: ${stdout}`);
+
+        // Send the standard output of the Python script to the frontend
+        res.send({ prediction: stdout });
+    });
+});
   
