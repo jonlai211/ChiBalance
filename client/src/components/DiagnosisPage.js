@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import axios from 'axios';
 import '../styles/DiagnosisPage.css';
 
@@ -11,12 +11,16 @@ const DiagnosisPage = () => {
     const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(true); // New loading state
 
+    const location = useLocation();
     const history = useHistory();
+
+    const userid = location.state.userid;
+    console.log(userid)
 
     useEffect(() => {
         const getDiagnosis = async () => {
             try {
-                const res = await axios.get("http://localhost:4000/diagnosis");
+                const res = await axios.post("http://localhost:4000/diagnosis",  {userid});
                 setName(res.data.name);
                 setAge(res.data.age);
                 setAnswers(res.data.answers);

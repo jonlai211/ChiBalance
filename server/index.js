@@ -2,9 +2,11 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const axios = require('axios');
+const bodyParser = require('body-parser');
 
 const port = 4000
 
+app.use(bodyParser.json());
 const defaultPatientData = {
     name: 'UserAgent',
     age: 24,
@@ -31,9 +33,25 @@ const defaultPatientDiagnosisAndObservation = {
 }
 app.use(cors())
 
-app.get('/diagnosis', (req, res)=> {
+app.post('/diagnosis', (req, res)=> {
+    const { userid } = req.body
+    console.log("diagnosis", userid)
     console.log(defaultPatientDiagnosisAndObservation)
     res.send(defaultPatientDiagnosisAndObservation)
+})
+
+app.post('/patientscan', (req, res)=> {
+    const { linkdownload } = req.body
+    console.log("patient scan", linkdownload)
+    res.send({status: "OK"})
+})
+
+app.post('/questionnaire', (req, res)=>{
+    console.log("here!")
+    const userid = req.body.userid
+    const formdata = req.body.formData
+    console.log(formdata)
+    res.send("ok")
 })
 
 app.listen(port, () => {

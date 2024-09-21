@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import axios from 'axios'
+
 const PatientScanPage = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCaptured, setIsCaptured] = useState(false); // Capture state
     const [imageSrc, setImageSrc] = useState(null); // Store captured image data
-
+    const [linkdownload, setLinkDownload] = useState("");
+    
     const initCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -15,13 +18,19 @@ const PatientScanPage = () => {
         }
     };
 
+    const location = useLocation();
     const history = useHistory();
+
+    const userid = location.state.userid;
+    console.log(userid)
 
     const downloadImage = (dataURL) => {
         // Create a temporary link element
         const link = document.createElement('a');
         link.href = dataURL;
-        link.download = 'captured-image.png';
+        const download = `${userid+Date.now()}.png`;
+        setLinkDownload(download)
+        link.download = download
         
         document.body.appendChild(link);
         link.click(); 
@@ -58,6 +67,10 @@ const PatientScanPage = () => {
         setIsCaptured(true);
     };
 
+    const submitPicture = async () => {
+        const res = await axios.post("http://localhost:4000/patientscan", { linkdownload })
+        history.push('/diagnosis', {userid: userid})
+    }
 
     useEffect(() => {
         initCamera();
@@ -74,7 +87,7 @@ const PatientScanPage = () => {
                     <button onClick={() => history.go(0)} className="btn">
                         Retry
                     </button>
-                    <button onClick={() => history.push('/diagnosis')} className="btn">
+                    <button onClick={submitPicture} className="btn">
                         Next
                     </button>
                 </>

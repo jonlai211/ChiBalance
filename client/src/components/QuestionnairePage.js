@@ -1,31 +1,33 @@
 import React, { useState } from "react";
 import styles from "../styles/QuestionnairePage.module.css"; // 스타일 추가
 import { useHistory } from "react-router-dom";
+import SHA256 from 'crypto-js/sha256';
+import axios from 'axios';
 
 const QuestionnairePage = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    name: "UserAgent",
     birthDate: {
-      month: "",
-      day: "",
-      year: "",
+      month: 1,
+      day: 1,
+      year: 1924,
     },
-    gender: "",
-    coldHeat: "",
-    sweating: "",
-    headBodyIssues: "",
-    bowelMovements: "",
-    diet: "",
-    chestAbdomenIssues: "",
-    hearingIssues: "",
-    thirst: "",
-    pastIllnesses: "",
-    knownCauses: "",
+    gender: "male",
+    coldHeat: "cold",
+    sweating: "yes",
+    headBodyIssues: "yes",
+    bowelMovements: "regular",
+    diet: "balanced",
+    chestAbdomenIssues: "yes",
+    hearingIssues: "yes",
+    thirst: "yes",
+    pastIllnesses: "none",
+    knownCauses: "none",
     additionalSymptoms: "",
-    photo: null,
+    // photo: null,
   });
 
-  const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
+//   const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
   const history = useHistory();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,20 +47,33 @@ const QuestionnairePage = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      photo: file,
-    });
-    setPhotoPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
-  };
+//   const handleFileChange = (e) => {
+//     const file = e.target.files[0];
+//     setFormData({
+//       ...formData,
+//       photo: file,
+//     });
+//     setPhotoPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
+//   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
     // alert("Submitted!");
-    history.push('/patientscan')
+    const input = formData.name + formData.birthDate + Date.now()
+    const userid = SHA256(input).toString();
+    console.log(userid)
+    setFormData((prevData) => ({
+        ...prevData,
+        userid: userid,
+      }));
+    console.log(formData)
+    try {
+        const res = await axios.post("http://localhost:4000/questionnaire", {userid, formData});
+    } catch(e) {
+        console.error(e)
+    }
+    history.push('/patientscan', { userid })
   };
 
   return (
