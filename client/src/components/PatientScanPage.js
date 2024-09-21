@@ -3,11 +3,16 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "../styles/PatientScanPage.css";
 
+import React, { useEffect, useState, useRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import axios from "axios";
+
 const PatientScanPage = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isCaptured, setIsCaptured] = useState(false); // Capture state
   const [imageSrc, setImageSrc] = useState(null); // Store captured image data
+  const [linkdownload, setLinkDownload] = useState("");
 
   const initCamera = async () => {
     try {
@@ -18,13 +23,19 @@ const PatientScanPage = () => {
     }
   };
 
+  const location = useLocation();
   const history = useHistory();
+
+  const userid = location.state.userid;
+  console.log(userid);
 
   const downloadImage = (dataURL) => {
     // Create a temporary link element
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = "captured-image.png";
+    const download = `${userid + Date.now()}.png`;
+    setLinkDownload(download);
+    link.download = download;
 
     document.body.appendChild(link);
     link.click();
@@ -60,40 +71,74 @@ const PatientScanPage = () => {
     // Update the state to indicate that the picture has been captured
     setIsCaptured(true);
   };
-
-  useEffect(() => {
-    initCamera();
-  }, []);
-
-  return (
-    <div className="container">
-      <h1 style={{ top: "20px", right: "20px" }}>Camera Capture</h1>
-      <div className="video-container">
-        {isCaptured ? (
-          <>
-            {imageSrc && (
-              <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
-            )}
-            <button onClick={() => history.go(0)} className="btn">
-              Retry
-            </button>
-            <button onClick={() => history.push("/diagnosis")} className="btn">
-              Next
-            </button>
-          </>
-        ) : (
-          <>
-            <video ref={videoRef} autoPlay className="video" />
-            <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
-            <div className="guideline"></div>
-            <button onClick={takePicture} className="btn">
-              Take Picture
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  );
+  // Update the state to indicate that the picture has been captured
+  setIsCaptured(true);
 };
+
+const submitPicture = async () => {
+  const res = await axios.post("http://localhost:4000/patientscan", {
+    linkdownload,
+  });
+  history.push("/diagnosis", { userid: userid });
+};
+
+useEffect(() => {
+  initCamera();
+}, []);
+
+return (
+  <div className="container">
+    <h1 style={{ top: "20px", right: "20px" }}>Camera Capture</h1>
+    <div className="video-container">
+      {isCaptured ? (
+        <>
+          {imageSrc && (
+            <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
+          )}
+          <button onClick={() => history.go(0)} className="btn">
+            Retry
+          </button>
+          <button onClick={() => history.push("/diagnosis")} className="btn">
+            Next
+          </button>
+        </>
+      ) : (
+        <>
+          <video ref={videoRef} autoPlay className="video" />
+          <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+          <div className="guideline"></div>
+          <button onClick={takePicture} className="btn">
+            Take Picture
+          </button>
+        </>
+      )}
+    </div>
+  </div>
+);
+return (
+  <div>
+    <h1>Camera Capture</h1>
+
+    {isCaptured ? (
+      <>
+        {imageSrc && (
+          <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
+        )}
+        <button onClick={() => history.go(0)} className="btn">
+          Retry
+        </button>
+        <button onClick={submitPicture} className="btn">
+          Next
+        </button>
+      </>
+    ) : (
+      <>
+        <video ref={videoRef} autoPlay style={{ width: "100%" }}></video>
+        <button onClick={takePicture}>Take Picture</button>
+      </>
+    )}
+    <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+  </div>
+);
 
 export default PatientScanPage;
