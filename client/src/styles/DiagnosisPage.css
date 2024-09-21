@@ -38,4 +38,9 @@
     flex: 0 0 auto;
 }
 
+.wide-btn {
+width: 300px !important;
+
+}
+
 
