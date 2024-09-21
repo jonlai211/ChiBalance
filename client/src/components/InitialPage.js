@@ -639,9 +639,9 @@ const InitialPage = () => {
   );
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="text-section">
+    <div className="initial-container">
+      <div className="initial-content">
+        <div className="initial-text-section">
           <h1>Welcome to TCM Helper!</h1>
           <p>
             TCM delivers quick and reliable symptom diagnosis, making healthcare
@@ -656,7 +656,7 @@ const InitialPage = () => {
             Start
           </button>
         </div>
-        <div className="image-section">{svg}</div>
+        <div className="initial-image-section">{svg}</div>
       </div>
     </div>
   );

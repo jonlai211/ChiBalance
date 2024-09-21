@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/QuestionnairePage.module.css"; // 스타일 추가
+import "../styles/QuestionnairePage.css";
 import { useHistory } from "react-router-dom";
 
 const QuestionnairePage = () => {
@@ -25,8 +25,9 @@ const QuestionnairePage = () => {
     photo: null,
   });
 
-  const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
+  const [photoPreview, setPhotoPreview] = useState(null);
   const history = useHistory();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "month" || name === "day" || name === "year") {
@@ -51,22 +52,22 @@ const QuestionnairePage = () => {
       ...formData,
       photo: file,
     });
-    setPhotoPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
+    setPhotoPreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // alert("Submitted!");
-    history.push('/patientscan')
+    history.push("/patientscan");
   };
 
   return (
-    <div className={styles.container}>
-      <h2>New Patient Questionnaire</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label>
-          Name:
+    <div className="container">
+      <h1>New Patient Questionnaire</h1>
+      <h2>Personal Information</h2>
+      <form onSubmit={handleSubmit} className="form">
+        <div className="form-group">
+          <label>Name:</label>
           <input
             type="text"
             name="name"
@@ -74,11 +75,11 @@ const QuestionnairePage = () => {
             onChange={handleChange}
             required
           />
-        </label>
+        </div>
 
-        <label>
-          Birthdate:
-          <div style={{ display: "flex", gap: "10px" }}>
+        <div className="form-group birthdateGenderRow">
+          <div className="birthdate-container">
+            <label>Birthdate:</label>
             <select
               name="month"
               value={formData.birthDate.month}
@@ -119,10 +120,8 @@ const QuestionnairePage = () => {
               ))}
             </select>
           </div>
-        </label>
 
-        <label>
-          Gender:
+          <label style={{ marginLeft: "20px" }}>Gender:</label>
           <select
             name="gender"
             value={formData.gender}
@@ -134,186 +133,118 @@ const QuestionnairePage = () => {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-        </label>
+        </div>
 
-        <h3>Health Questions</h3>
+        <h2>Health Questions</h2>
 
-        <label>
-          1. Have you experienced any cold or heat sensations?
-          <select
-            name="coldHeat"
-            value={formData.coldHeat}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="cold">Cold</option>
-            <option value="hot">Hot</option>
-            <option value="normal">Normal</option>
-          </select>
-        </label>
+        {[
+          {
+            question: "1. Have you experienced any cold or heat sensations?",
+            name: "coldHeat",
+            options: ["cold", "hot", "normal"],
+            example:
+              "Example: Have you felt unusually cold or had a sensation of heat in your body?",
+          },
+          {
+            question: "2. Have you been sweating more than usual?",
+            name: "sweating",
+            options: ["yes", "no"],
+            example:
+              "Example: Do you find yourself sweating without any apparent reason, or feeling hotter than usual?",
+          },
+          {
+            question:
+              "3. Do you have any discomfort or issues with your head or body?",
+            name: "headBodyIssues",
+            options: ["yes", "no"],
+            example:
+              "Example: Are you experiencing headaches, dizziness, or any muscle pain?",
+          },
+          {
+            question:
+              "4. How is your bowel health? Are your movements regular?",
+            name: "bowelMovements",
+            options: ["regular", "irregular", "constipation", "diarrhea"],
+            example:
+              "Example: Have you been experiencing constipation or diarrhea, or do you feel different from your usual bowel patterns?",
+          },
+          {
+            question:
+              "5. Can you describe your diet? What types of food do you usually eat?",
+            name: "diet",
+            options: ["balanced", "unbalanced", "restricted"],
+            example:
+              "Example: What foods do you consume daily, and do you have any particular likes or dislikes?",
+          },
+          {
+            question:
+              "6. Are you experiencing any discomfort or pain in your chest or abdomen?",
+            name: "chestAbdomenIssues",
+            options: ["yes", "no"],
+            example:
+              "Example: Do you feel any tightness in your chest or unusual sensations in your abdomen?",
+          },
+          {
+            question: "7. Have you had any hearing issues?",
+            name: "hearingIssues",
+            options: ["yes", "no"],
+            example:
+              "Example: Have you noticed any ringing in your ears or difficulty hearing sounds clearly?",
+          },
+          {
+            question: "8. Are you feeling excessively thirsty?",
+            name: "thirst",
+            options: ["yes", "no"],
+            example:
+              "Example: Do you find yourself needing to drink more water than usual, or experiencing frequent thirst?",
+          },
+          {
+            question:
+              "9. Do you have any past illnesses that we should be aware of?",
+            name: "pastIllnesses",
+            options: ["none", "known"],
+            example:
+              "Example: Have you had any serious illnesses in the past, or are you currently taking any medications?",
+          },
+          {
+            question: "10. Are there any known causes for your symptoms?",
+            name: "knownCauses",
+            options: ["none", "known"],
+            example:
+              "Example: Have you been under significant stress recently, or noticed symptoms appearing after eating certain foods?",
+          },
+        ].map(({ question, name, options }) => (
+          <div className="form-group" key={name}>
+            <label>{question}</label>
+            <select
+              name={name}
+              value={formData[name]}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select...</option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
 
-        <label>
-          2. Have you been sweating more than usual?
-          <select
-            name="sweating"
-            value={formData.sweating}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          3. Any issues with your head or body?
-          <select
-            name="headBodyIssues"
-            value={formData.headBodyIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          4. How are your bowel movements?
-          <select
-            name="bowelMovements"
-            value={formData.bowelMovements}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="regular">Regular</option>
-            <option value="irregular">Irregular</option>
-            <option value="constipation">Constipation</option>
-            <option value="diarrhea">Diarrhea</option>
-          </select>
-        </label>
-
-        <label>
-          5. How is your diet?
-          <select
-            name="diet"
-            value={formData.diet}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="balanced">Balanced</option>
-            <option value="unbalanced">Unbalanced</option>
-            <option value="restricted">Restricted</option>
-          </select>
-        </label>
-
-        <label>
-          6. Any chest or abdominal issues?
-          <select
-            name="chestAbdomenIssues"
-            value={formData.chestAbdomenIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          7. Have you had any hearing issues?
-          <select
-            name="hearingIssues"
-            value={formData.hearingIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          8. Are you feeling excessively thirsty?
-          <select
-            name="thirst"
-            value={formData.thirst}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          9. Do you have any past illnesses we should know about?
-          <select
-            name="pastIllnesses"
-            value={formData.pastIllnesses}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="none">None</option>
-            <option value="known">Known</option>
-          </select>
-        </label>
-
-        <label>
-          10. Are there any known causes for your symptoms?
-          <select
-            name="knownCauses"
-            value={formData.knownCauses}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="none">None</option>
-            <option value="known">Known</option>
-          </select>
-        </label>
-
-        <label>
-          (Optional) If you have any additional symptoms that the doctor should
-          know about, please describe them:
+        <div className="form-group">
+          <label>
+            (Optional) If you have any additional symptoms that the doctor
+            should know about, please describe them:
+          </label>
           <textarea
             name="additionalSymptoms"
             value={formData.additionalSymptoms}
             onChange={handleChange}
             placeholder="Describe your additional symptoms..."
-            style={{ height: "100px", width: "100%" }} // 크기 조절
+            style={{ height: "100px", width: "100%" }}
           />
-        </label>
-
-        {/* <label>
-          Upload Photo:
-          <input
-            type="file"
-            name="photo"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </label>
-
-        {photoPreview && (
-          <div style={{ marginTop: "10px" }}>
-            <h4>Photo Preview:</h4>
-            <img
-              src={photoPreview}
-              alt="Uploaded"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
-            />
-          </div>
-        )} */}
+        </div>
 
         <button type="submit">Submit</button>
       </form>
