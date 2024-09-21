@@ -24,4 +24,5 @@ yarn-error.log*
 
 # server
 server/src/.venv/
-server/src/*.{png,task,pth}
+server/src/model/
+server/src/img/
