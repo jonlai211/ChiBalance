@@ -10,6 +10,11 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from torchvision import transforms
 import warnings
+import json
+
+# Load description mapping from JSON file
+with open('src/map_predict.json', 'r', encoding='utf-8') as f:
+    description_mapping = json.load(f)
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='torch')
@@ -128,38 +133,68 @@ def main(image_path):
     image = mp.Image.create_from_file(image_path)
     detection_result = detector.detect(image)
 
+    results = []
+
     if detection_result.face_landmarks:
         left_eye_image = draw_parts(image, detection_result, left_eye_landmarks_ids)
         cv2.imwrite('left_eye.png', left_eye_image)
         left_eye_prediction = predict(eyes_model, 'left_eye.png', eyes_categories)
-        print(f'Predicted label for left eye: {left_eye_prediction}')
+        results.append({
+            "object": "left_eye",
+            "label": left_eye_prediction,
+            "description": description_mapping[f"eye_{left_eye_prediction}"]
+        })
 
         right_eye_image = draw_parts(image, detection_result, right_eye_landmarks_ids)
         cv2.imwrite('right_eye.png', right_eye_image)
         right_eye_prediction = predict(eyes_model, 'right_eye.png', eyes_categories)
-        print(f'Predicted label for right eye: {right_eye_prediction}')
+        results.append({
+            "object": "right_eye",
+            "label": right_eye_prediction,
+            "description": description_mapping[f"eye_{right_eye_prediction}"]
+        })
 
         upper_lip_image = draw_parts(image, detection_result, upper_lip_landmarks_ids)
         cv2.imwrite('upper_lip.png', upper_lip_image)
         upper_lip_prediction = predict(lips_model, 'upper_lip.png', lips_categories)
-        print(f'Predicted label for upper lip: {upper_lip_prediction}')
+        results.append({
+            "object": "upper_lip",
+            "label": upper_lip_prediction,
+            "description": description_mapping[f"lip_{upper_lip_prediction}"]
+        })
 
         lower_lip_image = draw_parts(image, detection_result, lower_lip_landmarks_ids)
         cv2.imwrite('lower_lip.png', lower_lip_image)
         lower_lip_prediction = predict(lips_model, 'lower_lip.png', lips_categories)
-        print(f'Predicted label for lower lip: {lower_lip_prediction}')
+        results.append({
+            "object": "lower_lip",
+            "label": lower_lip_prediction,
+            "description": description_mapping[f"lip_{lower_lip_prediction}"]
+        })
 
         left_cheek_image = draw_parts(image, detection_result, left_cheek_landmarks_ids)
         cv2.imwrite('left_cheek.png', left_cheek_image)
         left_cheek_prediction = predict(cheeks_model, 'left_cheek.png', cheeks_categories)
-        print(f'Predicted label for left cheek: {left_cheek_prediction}')
+        results.append({
+            "object": "left_cheek",
+            "label": left_cheek_prediction,
+            "description": description_mapping[f"cheek_{left_cheek_prediction}"]
+        })
 
         right_cheek_image = draw_parts(image, detection_result, right_check_landmarks_ids)
         cv2.imwrite('right_cheek.png', right_cheek_image)
         right_cheek_prediction = predict(cheeks_model, 'right_cheek.png', cheeks_categories)
-        print(f'Predicted label for right cheek: {right_cheek_prediction}')
+        results.append({
+            "object": "right_cheek",
+            "label": right_cheek_prediction,
+            "description": description_mapping[f"cheek_{right_cheek_prediction}"]
+        })
     else:
-        print("No face landmarks detected.")
+        results.append({
+            "error": "No face landmarks detected."
+        })
+
+    print(json.dumps(results, ensure_ascii=False, indent=4))
 
 
 if __name__ == "__main__":

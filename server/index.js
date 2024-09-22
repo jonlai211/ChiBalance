@@ -5,6 +5,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const { downloadfiledirectory } = require('./downdir.js');
+const { predict } = require('./classification.js');
 
 const port = 4000
 
@@ -48,7 +49,7 @@ app.post('/predict_face', (req, res) => {
     console.log(downloadfiledirectory)
     const { linkdownload } = req.body;  // Image path from the frontend
 
-    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, (error, stdout, stderr) => {
+    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, async (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
             return res.status(500).send('Error occurred while executing Python script');
@@ -60,8 +61,21 @@ app.post('/predict_face', (req, res) => {
 
         console.log(`Python script output: ${stdout}`);
 
-        // Send the standard output of the Python script to the frontend
-        res.send(stdout);
+        // Assuming stdout contains the prediction results in JSON format
+        const predictions = JSON.parse(stdout);
+        const descriptions = predictions.map(prediction => `${prediction.object} ${prediction.description}`);
+
+        const combinedDescription = descriptions.join(" ");
+        console.log(`Combined Observation Description: ${combinedDescription}`);
+
+        try {
+            const gptResponse = await predict(combinedDescription);
+            res.send({ diagnosis: gptResponse });
+            console.log(`Response: ${gptResponse}`);
+        } catch (apiError) {
+            console.error(`Error calling API: ${apiError.message}`);
+            res.status(500).send('Error occurred while calling API');
+        }
     });
 });
   

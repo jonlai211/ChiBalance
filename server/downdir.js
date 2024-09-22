@@ -1,2 +1,2 @@
-const downloadfiledirectory = "/home/jonathan/Downloads/"
-module.exports = { downloadfiledirectory };
+export const downloadfiledirectory = "/home/jonathan/Downloads/"
+// module.exports = { downloadfiledirectory };
