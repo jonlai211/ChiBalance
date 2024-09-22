@@ -8,26 +8,18 @@ We analyze tongue condition through a combination of visual inspection and data 
 
 ## Demo Video
 
-[Insert link to your demo video here]
+[![Demo Video](https://img.youtube.com/vi/McSuSOSRtOI/0.jpg)](https://youtu.be/McSuSOSRtOI)
 
 ## Team Members
 
-- Xinran Liu
-- Kaijie Lai
-- Chloe Yun
-- Ho Lok Cheung
+- University of Pennsylvania - MS EE Kaijie Lai
+- University of Pennsylvania - CIS Xinran Liu
+- University of Pennsylvania - MCIT Chloe Yun
+- De Anza College - CS Ho Lok Cheung
 
 ## Submission Track
 
 [Specify the ONE track you're submitting to]
-
-## Prizes
-
-We're submitting for the following prizes:
-
-- [Prize 1]
-- [Prize 2]
-- [Prize 3]
 
 ## Technologies Used
 
