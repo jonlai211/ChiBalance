@@ -12,7 +12,7 @@ import DiagnosisPage from "./components/DiagnosisPage.js";
 import PatientScanPage from "./components/PatientScanPage.js";
 import QuestionnairePage from "./components/QuestionnairePage.js";
 import InitialPage from "./components/InitialPage.js";
-
+import TongueAnalysis from "./components/TongueAnalysis.js";
 function App() {
   return (
     <Router>
@@ -29,6 +29,9 @@ function App() {
           </Route>
           <Route exact path="/">
             <InitialPage />
+          </Route>
+          <Route path="/tongue">
+            <TongueAnalysis />
           </Route>
         </Switch>
       </div>

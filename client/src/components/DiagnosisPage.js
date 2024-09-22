@@ -13,10 +13,12 @@ const DiagnosisPage = () => {
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
-  const history = useHistory(); 
+  const history = useHistory();
 
-  const {userid, linkdownload}  = location.state; // Ensure location.state is available
-  console.log(userid, linkdownload);
+  const userid = location.state?.userid; // Ensure location.state is available
+  console.log(userid);
+
+
 
   useEffect(() => {
     const getDiagnosis = async () => {

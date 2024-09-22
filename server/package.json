@@ -2,16 +2,25 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "server": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "axios": "^1.7.7",
+    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "nodemon": "^3.1.7"
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.7",
+    "openai": "^4.63.0",
+    "path": "^0.12.7"
+
   }
 }
