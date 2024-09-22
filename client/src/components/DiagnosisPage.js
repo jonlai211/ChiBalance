@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
-import "../styles/DiagnosisPage.css";
+import axios from 'axios';
+import '../styles/DiagnosisPage.css';
 
 const DiagnosisPage = () => {
   const [observation, setObservation] = useState([]);
@@ -9,10 +9,13 @@ const DiagnosisPage = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(18);
   const [answers, setAnswers] = useState([]);
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation();
-  const history = useHistory();
+  const history = useHistory(); 
+
+  const userid = location.state?.userid; // Ensure location.state is available
+  console.log(userid);
 
   const userid = location.state.userid;
   console.log(userid);
@@ -20,27 +23,30 @@ const DiagnosisPage = () => {
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
-        const res = await axios.post("http://localhost:4000/diagnosis", {
-          userid,
-        });
+
+        const res = await axios.post("http://localhost:4000/diagnosis", { userid });
         setName(res.data.name);
         setAge(res.data.age);
         setAnswers(res.data.answers);
         setDiagnosis(res.data.diagnosis);
         setObservation(res.data.observations);
       } catch (e) {
-        console.error("Error caught:", e);
+        console.error('Error caught:', e);
       } finally {
-        setLoading(false); // Set loading to false when done
+        setLoading(false);
       }
     };
-    getDiagnosis();
-  }, []);
+
+    if (userid) {
+      getDiagnosis(); // Only fetch if userid is available
+    } else {
+      setLoading(false); // Handle case where userid is undefined
+    }
+  }, [userid]);
 
   if (loading) {
-    // Conditional rendering based on loading state
     return (
-      <div className="diagnosis-page">
+      <div className='diagnosis-page'>
         <div className="center-item">
           <div className="header">Loading patient data...</div>
           <div className="content">

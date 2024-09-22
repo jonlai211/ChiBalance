@@ -1,45 +1,12 @@
 import React, { useState } from "react";
 import "../styles/QuestionnairePage.css";
 import { useHistory } from "react-router-dom";
-import SHA256 from "crypto-js/sha256";
-import axios from "axios";
+import SHA256 from 'crypto-js/sha256';
+import axios from 'axios';
+import {questionnaire, defaultQuestionnaire} from '../api/api.js'
 
 const QuestionnairePage = () => {
-  const [formData, setFormData] = useState({
-    name: "UserAgent",
-    birthDate: "1924-01-01",
-    gender: "male",
-    coldHeat: "cold",
-    sweating: "yes",
-    headBodyIssues: "yes",
-    bowelMovements: "regular",
-    diet: "balanced",
-    chestAbdomenIssues: "yes",
-    hearingIssues: "yes",
-    thirst: "yes",
-    pastIllnesses: "none",
-    knownCauses: "none",
-    name: "UserAgent",
-    birthDate: {
-      month: 1,
-      day: 1,
-      year: 1924,
-    },
-    gender: "male",
-    coldHeat: "cold",
-    sweating: "yes",
-    headBodyIssues: "yes",
-    bowelMovements: "regular",
-    diet: "balanced",
-    chestAbdomenIssues: "yes",
-    hearingIssues: "yes",
-    thirst: "yes",
-    pastIllnesses: "none",
-    knownCauses: "none",
-    additionalSymptoms: "",
-    // photo: null,
-  });
-
+  const [formData, setFormData] = useState(defaultQuestionnaire);
   const [photoPreview, setPhotoPreview] = useState(null);
   //   const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
   const history = useHistory();
@@ -83,23 +50,16 @@ const QuestionnairePage = () => {
     e.preventDefault();
     console.log(formData);
     // alert("Submitted!");
-    const input = formData.name + formData.birthDate + Date.now();
+    const input = formData.name + formData.birthDate + Date.now()
     const userid = SHA256(input).toString();
-    console.log(userid);
-    setFormData((prevData) => ({
-      ...prevData,
-      userid: userid,
-    }));
-    console.log(formData);
+    console.log(userid)
+    console.log(formData)
     try {
-      const res = await axios.post("http://localhost:4000/questionnaire", {
-        userid,
-        formData,
-      });
-    } catch (e) {
-      console.error(e);
+        const res = await axios.post("http://localhost:4000/questionnaire", {userid, formData});
+    } catch(e) {
+        console.error(e)
     }
-    history.push("/patientscan", { userid });
+    history.push('/patientscan', { userid })
   };
   return (
     <div className="container">
@@ -146,83 +106,7 @@ const QuestionnairePage = () => {
 
         <h2>Health Questions</h2>
 
-        {[
-          {
-            question: "1. Have you experienced any cold or heat sensations?",
-            name: "coldHeat",
-            options: ["cold", "hot", "normal"],
-            example:
-              "Example: Have you felt unusually cold or had a sensation of heat in your body?",
-          },
-          {
-            question: "2. Have you been sweating more than usual?",
-            name: "sweating",
-            options: ["yes", "no"],
-            example:
-              "Example: Do you find yourself sweating without any apparent reason, or feeling hotter than usual?",
-          },
-          {
-            question:
-              "3. Do you have any discomfort or issues with your head or body?",
-            name: "headBodyIssues",
-            options: ["yes", "no"],
-            example:
-              "Example: Are you experiencing headaches, dizziness, or any muscle pain?",
-          },
-          {
-            question:
-              "4. How is your bowel health? Are your movements regular?",
-            name: "bowelMovements",
-            options: ["regular", "irregular", "constipation", "diarrhea"],
-            example:
-              "Example: Have you been experiencing constipation or diarrhea, or do you feel different from your usual bowel patterns?",
-          },
-          {
-            question:
-              "5. Can you describe your diet? What types of food do you usually eat?",
-            name: "diet",
-            options: ["balanced", "unbalanced", "restricted"],
-            example:
-              "Example: What foods do you consume daily, and do you have any particular likes or dislikes?",
-          },
-          {
-            question:
-              "6. Are you experiencing any discomfort or pain in your chest or abdomen?",
-            name: "chestAbdomenIssues",
-            options: ["yes", "no"],
-            example:
-              "Example: Do you feel any tightness in your chest or unusual sensations in your abdomen?",
-          },
-          {
-            question: "7. Have you had any hearing issues?",
-            name: "hearingIssues",
-            options: ["yes", "no"],
-            example:
-              "Example: Have you noticed any ringing in your ears or difficulty hearing sounds clearly?",
-          },
-          {
-            question: "8. Are you feeling excessively thirsty?",
-            name: "thirst",
-            options: ["yes", "no"],
-            example:
-              "Example: Do you find yourself needing to drink more water than usual, or experiencing frequent thirst?",
-          },
-          {
-            question:
-              "9. Do you have any past illnesses that we should be aware of?",
-            name: "pastIllnesses",
-            options: ["none", "known"],
-            example:
-              "Example: Have you had any serious illnesses in the past, or are you currently taking any medications?",
-          },
-          {
-            question: "10. Are there any known causes for your symptoms?",
-            name: "knownCauses",
-            options: ["none", "known"],
-            example:
-              "Example: Have you been under significant stress recently, or noticed symptoms appearing after eating certain foods?",
-          },
-        ].map(({ question, name, options }) => (
+        {questionnaire.map(({ question, name, options }) => (
           <div className="form-group" key={name}>
             <label>{question}</label>
             <select
