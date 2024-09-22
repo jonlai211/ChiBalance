@@ -75,7 +75,7 @@ const PatientScanPage = () => {
             console.error("Error submitting picture:", error);
         } finally {
             setLoading(false);  // Stop loading
-            history.push('/diagnosis', { state: { userid, linkdownload } });
+            history.push('/diagnosis', { userid, linkdownload });
         }
     };
 
@@ -86,6 +86,7 @@ const PatientScanPage = () => {
     return (
         <div className="container">
             <h1 style={{ marginTop: "20px" }}>Camera Capture</h1>
+            <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front and look at the camera</h2>
             <div className="video-container">
                 {isCaptured ? (
                     <>
@@ -94,12 +95,7 @@ const PatientScanPage = () => {
                                 <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
                                 {/* Conditionally render 'Next' button or loading spinner */}
                                 {loading ? (
-                                    <div className="spinner">
-                                        <svg viewBox="0 0 50 50">
-                                            {/* Your spinner SVG content */}
-                                        </svg>
-                                        <p>Submitting...</p>
-                                    </div>
+                                    <p>Submitting...</p>
                                 ) : (
                                 <>
                                     <button onClick={() => history.go(0)} className="btn">

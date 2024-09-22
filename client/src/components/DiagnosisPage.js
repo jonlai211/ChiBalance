@@ -56,8 +56,14 @@ const DiagnosisPage = () => {
   return (
     <div className="diagnosis-page">
       <div className="center-item">
-        <div className="header">Patient Name: {name}</div>
-        <div className="header">Patient Age: {age}</div>
+        <h1>Analysis</h1>
+        <h2>
+            Below is the analysis of your health condition
+        </h2>
+        <div className="header">
+            <div className="subpart"> Patient Name: {name}</div>
+            <div className="subpart">Patient Age: {age}</div>
+        </div>
         <div className="content">
           <div className="patient-diagnosis">
             <strong>Diagnosis:</strong>
