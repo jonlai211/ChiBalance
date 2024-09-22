@@ -1,2 +1,2 @@
-const downloadfiledirectory = "/Users/angela/Downloads/"
+const downloadfiledirectory = "/home/jonathan/Downloads/"
 module.exports = { downloadfiledirectory };
