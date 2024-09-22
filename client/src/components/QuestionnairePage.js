@@ -7,8 +7,8 @@ import {questionnaire, defaultQuestionnaire} from '../api/api.js'
 
 const QuestionnairePage = () => {
   const [formData, setFormData] = useState(defaultQuestionnaire);
-
   const [photoPreview, setPhotoPreview] = useState(null);
+  //   const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
   const history = useHistory();
 
   const handleChange = (e) => {
@@ -37,6 +37,14 @@ const QuestionnairePage = () => {
     });
     setPhotoPreview(URL.createObjectURL(file));
   };
+  //   const handleFileChange = (e) => {
+  //     const file = e.target.files[0];
+  //     setFormData({
+  //       ...formData,
+  //       photo: file,
+  //     });
+  //     setPhotoPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
+  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -131,7 +139,9 @@ const QuestionnairePage = () => {
           />
         </div>
 
-        <button type="submit">Submit</button>
+        <button className="btn" type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );

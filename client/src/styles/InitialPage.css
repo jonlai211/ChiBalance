@@ -1,5 +1,5 @@
 .initial-container {
-margin-top: 100px;
+margin-top: 80px;
 	position: absolute;
 	width: 100vw;
 	max-width: 1000px;
@@ -53,9 +53,33 @@ font-family: "SUSE", sans-serif;
 	font-weight: 900;
 	font-style: normal;
 
-
 }
 
 .btn:hover {
 	background-color: #4FBFA4;
+}
+
+.advantages-section {
+display: flex;
+flex-direction: row;
+margin: 130px 0;
+gap: 70px;
+}
+
+.advantage {
+	text-align: center;
+	transition: transform 0.3s;
+}
+
+.icon {
+	border-radius: 50%;
+	transition: transform 0.3s;
+}
+
+.icon:hover {
+	transform: scale(1.1);
+}
+
+.advantage:hover .icon {
+	transform: translateY(-10px);
 }
