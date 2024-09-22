@@ -68,6 +68,7 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         // const analysis = await classify(base64ImageUrl, 'survey/survey_answers.csv');
         // console.log('ANALYSIS:', analysis);
         // Call the classify function with the path of the image
+        console.log('Questionnaire:', questionnaire);
         const analysis = await classify(base64ImageUrl, questionnaire);
         console.log('ANALYSIS:', analysis);
 

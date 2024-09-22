@@ -6,12 +6,19 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY }); // Ensure API
 console.log('OpenAI API Key is set.'); // Log a message indicating the API key is set
 console.log('OpenAI client initialized successfully.'); // Log a message indicating the OpenAI client is initialized
 const userPrompt = `${process.env.USER_PROMPT}`;
+const systemPrompt = `${process.env.SYSTEM_PROMPT}`;
+console.log('User prompt:', userPrompt); // Log the user prompt
+console.log('System prompt:', systemPrompt); // Log the system prompt
 // Function to classify the image using OpenAI
 export const classify = async (base64ImageUrl, surveyAnswers) => {
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini-2024-07-18", // Ensure the model is correct
       messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
         {
           role: "user",
           content: [
