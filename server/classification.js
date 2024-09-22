@@ -11,7 +11,7 @@ const systemPredictPrompt = `${process.env.SYSTEM_PREDICT_PROMPT}`;
 console.log('User prompt:', userPrompt); // Log the user prompt
 console.log('System prompt:', systemPrompt); // Log the system prompt
 // Function to classify the image using OpenAI
-export const classify = async (base64ImageUrl, surveyAnswers) => {
+export const classify = async (base64ImageUrl, surveyAnswers, description, diagnosis) => {
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini-2024-07-18", // Ensure the model is correct

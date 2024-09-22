@@ -45,7 +45,7 @@ app.use(express.json()); // This allows express to parse JSON bodies
 // Route to handle image uploads and call the OpenAI API
 app.post('/classify', upload.single('file'), async (req, res) => {
     try {
-        const { userid, file } = req.body;
+        const  { userid, file, description, diagnosis } = req.body;
 
         console.log('Received file:', file); // Debug log for received file
 
@@ -79,7 +79,7 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         // console.log(fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8'));
         // questionnaire = fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8');
         questionnaire = record[userid]['formData']
-        const analysis = await classify(base64ImageUrl, questionnaire);
+        const analysis = await classify(base64ImageUrl, questionnaire, description, diagnosis);
         console.log('ANALYSIS:', analysis);
 
         // Return the analysis to the frontend
@@ -169,7 +169,7 @@ app.post('/patientscan', async (req, res)=> {
         user['diagnosis'] = diagnosis
 
         const file = downloadfiledirectory + linkdownload2
-        const tongue_condition = await axios.post(`http://localhost:${port}/classify`, { userid, file })
+        const tongue_condition = await axios.post(`http://localhost:${port}/classify`, { userid, file, description, diagnosis })
         console.log(tongue_condition.data)
         user['tongueanalysis'] = tongue_condition.data.analysis
         record[userid] = user
