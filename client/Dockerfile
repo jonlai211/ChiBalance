@@ -5,7 +5,7 @@ FROM node:20-bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Argument for API URL
-ARG REACT_APP_API_URL=http://localhost:3010
+ARG REACT_APP_API_URL=http://localhost:3000
 
 # Set the working directory to /app
 WORKDIR /app
