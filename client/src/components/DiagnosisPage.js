@@ -18,9 +18,6 @@ const DiagnosisPage = () => {
   const {userid, linkdownload}  = location.state; // Ensure location.state is available
   console.log(userid, linkdownload);
 
-  const userid = location.state.userid;
-  console.log(userid);
-
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
