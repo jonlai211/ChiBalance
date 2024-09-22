@@ -72,10 +72,11 @@ app.post('/patientscan', async (req, res)=> {
     try {
         const eye_condition = await axios.post(`http://localhost:${port}/predict-eye`, { linkdownload })
         console.log(eye_condition.data)
+        res.send({status: "OK"})
     }catch(e){
         console.error(e)
     }
-    res.send({status: "OK"})
+
 })
 
 app.post('/questionnaire', (req, res)=>{

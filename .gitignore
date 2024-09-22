@@ -26,3 +26,6 @@ yarn-error.log*
 server/src/.venv/
 server/src/model/
 server/src/img/
+
+# for directory storing dtaa
+server/downdir.js
