@@ -23,7 +23,7 @@ const DiagnosisPage = () => {
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
-        const res = await axios.post("http://localhost:4000/diagnosis", { userid });
+        const res = await axios.post(process.env.SERVER_URL + "/diagnosis", { userid });
         setName(res.data.name);
         setAge(res.data.age);
         setAnswers(res.data.answers);

@@ -98,7 +98,7 @@ const PatientScanPage = () => {
     const submitPicture = async () => {
         setLoading(true);  // Start loading
         try {
-            const res = await axios.post("http://localhost:4000/patientscan", { userid, linkdownload });
+            const res = await axios.post(process.env.SERVER_URL + "/patientscan", { userid, linkdownload });
         } catch (error) {
             console.error("Error submitting picture:", error);
         } finally {

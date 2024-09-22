@@ -6,13 +6,13 @@ import fs from 'fs'; // Added fs import for file handling
 import path from 'path';
 import multer from 'multer';
 import { classify } from './classification.js';
-
+const server = process.env.SERVER || "http://localhost:4000";
 const port = process.env.PORT || 4000;
 dotenv.config();
 
 console.log('Express app initialized.'); // Log app initialization
 console.log('OpenAI API Key:', process.env.OPENAI_API_KEY); // Log OpenAI API Key
-
+console.log('Server:', server);
 let questionnaire = "";
 
 // Middleware to handle CORS
@@ -56,7 +56,7 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         console.log('File uploaded successfully');
 
         // Prepare the image URL
-        const imageUrl = `http://localhost:${process.env.PORT || 4000}/uploads/${file.filename}`; // Adjust this based on your file serving setup
+        const imageUrl = `${server}/uploads/${file.filename}`; // Adjust this based on your file serving setup
 
         console.log('Image URL:', imageUrl); // Debug log for image URL
 

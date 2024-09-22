@@ -55,7 +55,7 @@ const QuestionnairePage = () => {
     console.log(userid)
     console.log(formData)
     try {
-        const res = await axios.post("http://localhost:4000/questionnaire", {userid, formData});
+        const res = await axios.post(process.env.SERVER_URL + "/questionnaire", {userid, formData});
     } catch(e) {
         console.error(e)
     }

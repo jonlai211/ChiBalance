@@ -32,7 +32,7 @@ function TongueAnalysis() {
 
     try {
       setLoading(true); // Set loading to true before the request
-      const response = await axios.post('http://localhost:4000/classify', formData, {
+      const response = await axios.post(process.env.SERVER_URL + "/classify", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
