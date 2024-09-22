@@ -1,0 +1,15 @@
+{
+    "eye_red": "is red, which may indicate irritation or infection.",
+    "eye_white": "is white, which may indicate a fungal infection or other issues.",
+    "eye_yellow": "is yellow, which may indicate jaundice or other liver issues.",
+    "eye_normal": "appears normal.",
+    "cheek_red": "is red, which may indicate irritation or infection.",
+    "cheek_white": "is white, which may indicate a fungal infection or other issues.",
+    "cheek_yellow": "is yellow, which may indicate jaundice or other liver issues.",
+    "cheek_cyan": "is cyan, which may indicate poor oxygenation.",
+    "cheek_normal": "appears normal.",
+    "lip_red": "is red, which may indicate irritation or infection.",
+    "lip_black": "is black, which may indicate necrosis or other severe conditions.",
+    "lip_white": "is white, which may indicate a fungal infection or other issues.",
+    "lip_normal": "appears normal."
+}
