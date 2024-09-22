@@ -1,4 +1,4 @@
-# PennApps_24f Tongue Analyzer
+# PennApps_ChiBalance
 
 ![Tongue Analyzer](/images/0.png)
 
@@ -19,15 +19,19 @@ We analyze tongue condition through a combination of visual inspection and data 
 
 ## Submission Track
 
-[Specify the ONE track you're submitting to]
+healthcare
 
 ## Prizes
 
 We're submitting for the following prizes:
 
-- [Prize 1]
-- [Prize 2]
-- [Prize 3]
+Most Creative Hack
+Best use of defang
+Best Use of Computer Vision (Sponsored by Roboflow)
+Most Technically Complex Hack
+Best Design
+Best Hardware Hack
+Best Next-Gen LLM-Powered Application (Sponsored by Tune)
 
 ## Technologies Used
 
