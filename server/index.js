@@ -44,11 +44,11 @@ app.post('/diagnosis', (req, res)=> {
     res.send(record[userid] ? record[userid] : {} )
 })
 
-app.post('/predict-eye', (req, res) => {
+app.post('/predict_face', (req, res) => {
     console.log(downloadfiledirectory)
     const { linkdownload } = req.body;  // Image path from the frontend
 
-    exec(`python3 src/predict_eye.py ${downloadfiledirectory}${linkdownload}`, (error, stdout, stderr) => {
+    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
             return res.status(500).send('Error occurred while executing Python script');
