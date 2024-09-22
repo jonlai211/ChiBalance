@@ -9,4 +9,4 @@ ser = serial.Serial(arduino_serial, 115200)
 
 while True:
     print(ser.readline())
-    time.sleep(1)
+    time.sleep(0.5)
