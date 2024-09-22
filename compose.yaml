@@ -18,12 +18,6 @@ services:
       # - server
   server:
     restart: unless-stopped
-    environment:
-      OLLAMA_HOST: http://localhost:11434
-      PROMPT: "tell me what what is going on with tongue including colors and texture"
-      OPENAI_API_KEY: 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
-      PORT: 4000
-      SYSTEM_PROMPT: "you are a doctor and you are given a picture of a tongue and a survey of the user. you must analyze the tongue and the survey and return a detailed analysis of the tongue and the survey."
     build:
       context: ./server
       dockerfile: Dockerfile
