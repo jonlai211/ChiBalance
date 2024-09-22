@@ -13,7 +13,7 @@ dotenv.config();
 console.log('Express app initialized.'); // Log app initialization
 console.log('OpenAI API Key:', process.env.OPENAI_API_KEY); // Log OpenAI API Key
 
-let questionnaire = null;
+let questionnaire = "";
 
 // Middleware to handle CORS
 const app = express();
@@ -38,6 +38,9 @@ console.log('Multer storage configured.'); // Log multer configuration
 
 // Add this line before your routes
 app.use(express.json()); // This allows express to parse JSON bodies
+
+
+
 
 // Route to handle image uploads and call the OpenAI API
 app.post('/classify', upload.single('file'), async (req, res) => {
@@ -68,7 +71,10 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         // const analysis = await classify(base64ImageUrl, 'survey/survey_answers.csv');
         // console.log('ANALYSIS:', analysis);
         // Call the classify function with the path of the image
-        console.log('Questionnaire:', questionnaire);
+        //tell what questionnaire.txt inside the questionnaire folder
+        // const analysis = await classify(base64ImageUrl, fs.readFileSync('1.txt', 'utf8'));
+        console.log(fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8'));
+        questionnaire = fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8');
         const analysis = await classify(base64ImageUrl, questionnaire);
         console.log('ANALYSIS:', analysis);
 
@@ -123,7 +129,11 @@ app.post('/questionnaire', (req, res) => {
     console.log("here!");
     const userid = req.body.userid;
     const formdata = req.body.formData;
-    questionnaire = formdata;
+    // Ensure the questionnaire directory exists
+    if (!fs.existsSync('questionnaire')) {
+        fs.mkdirSync('questionnaire'); // Create the directory if it doesn't exist
+    }
+    fs.writeFileSync('questionnaire/1.json', JSON.stringify(formdata)); // Convert formdata to a string
     console.log(formdata);
     res.send("ok");
 });
