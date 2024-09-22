@@ -38,7 +38,7 @@ export const classify = async (base64ImageUrl, surveyAnswers) => {
       max_tokens: 1000, // Set maximum tokens for the response
     });
     console.log('Classification response received:', response); // Log the response from the classification
-    return response.choices[0]; // Return the first choice from the response
+    return response.choices[0].message.content; // Return the first choice from the response
   } catch (error) {
     console.error('Error during classification:', error); // Debug log for error
     throw new Error('Classification failed'); // Throw an error if classification fails

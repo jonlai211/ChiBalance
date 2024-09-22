@@ -30,12 +30,12 @@ const Spinner = () => {
 };
 
 
-const PatientScanPage = () => {
+const TongueScanPage = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCaptured, setIsCaptured] = useState(false);
     const [imageSrc, setImageSrc] = useState(null);
-    const [linkdownload, setLinkDownload] = useState("");
+    const [linkdownload2, setLinkDownload] = useState("");
     const [loading, setLoading] = useState(false); // Loading state
 
     const initCamera = async () => {
@@ -51,12 +51,13 @@ const PatientScanPage = () => {
     const history = useHistory();
 
     const userid = location.state.userid;
-    console.log(userid);
+    const linkdownload1 = location.state.linkdownload;
+    console.log(userid, linkdownload1);
 
     const downloadImage = (dataURL) => {
         const link = document.createElement('a');
         link.href = dataURL;
-        const downloadName = `${userid + Date.now()}.png`;
+        const downloadName = `${userid + Date.now()}-2.png`;
         setLinkDownload(downloadName);
         link.download = downloadName;
 
@@ -96,7 +97,16 @@ const PatientScanPage = () => {
     };
 
     const submitPicture = async () => {
-        history.push('/tonguescan', { userid, linkdownload });
+        setLoading(true);  // Start loading
+        try {
+            console.log(userid, linkdownload1, linkdownload2)
+            const res = await axios.post("http://localhost:4000/patientscan", { userid, linkdownload1, linkdownload2 });
+        } catch (error) {
+            console.error("Error submitting picture:", error);
+        } finally {
+            setLoading(false);  // Stop loading
+            history.push('/diagnosis', { userid, linkdownload1, linkdownload2 });
+        }
     };
 
     useEffect(() => {
@@ -115,7 +125,10 @@ const PatientScanPage = () => {
                                 <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
                                 {/* Conditionally render 'Next' button or loading spinner */}
                                 {loading ? (
-                                    <p>Submitting...</p>
+                                    <>
+                                    <Spinner />
+                                    <p>Analyzing...</p>
+                                    </>
                                 ) : (
                                 <>
                                     <button onClick={() => history.go(0)} className="btn">
@@ -141,4 +154,4 @@ const PatientScanPage = () => {
     );
 };
 
-export default PatientScanPage;
+export default TongueScanPage;
