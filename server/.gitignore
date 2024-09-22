@@ -41,3 +41,5 @@ downdir.js
 /uploads/*.tiff
 /uploads/*.ico
 /uploads/*.svg
+
+/questionnaire/*.json
