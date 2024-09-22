@@ -5,6 +5,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const { downloadfiledirectory } = require('./downdir.js');
+const { predict } = require('./classification.js');
 
 const port = 4000
 
@@ -44,11 +45,11 @@ app.post('/diagnosis', (req, res)=> {
     res.send(record[userid] ? record[userid] : {} )
 })
 
-app.post('/predict-eye', (req, res) => {
+app.post('/predict_face', (req, res) => {
     console.log(downloadfiledirectory)
     const { linkdownload } = req.body;  // Image path from the frontend
 
-    exec(`python3.10 src/predict_eye.py ${downloadfiledirectory}${linkdownload}`, (error, stdout, stderr) => {
+    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, async (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
             return res.status(500).send('Error occurred while executing Python script');
@@ -60,8 +61,21 @@ app.post('/predict-eye', (req, res) => {
 
         console.log(`Python script output: ${stdout}`);
 
-        // Send the standard output of the Python script to the frontend
-        res.send(stdout);
+        // Assuming stdout contains the prediction results in JSON format
+        const predictions = JSON.parse(stdout);
+        const descriptions = predictions.map(prediction => `${prediction.object} ${prediction.description}`);
+
+        const combinedDescription = descriptions.join(" ");
+        console.log(`Combined Observation Description: ${combinedDescription}`);
+
+        try {
+            const gptResponse = await predict(combinedDescription);
+            res.send({ diagnosis: gptResponse });
+            console.log(`Response: ${gptResponse}`);
+        } catch (apiError) {
+            console.error(`Error calling API: ${apiError.message}`);
+            res.status(500).send('Error occurred while calling API');
+        }
     });
 });
   
@@ -70,7 +84,7 @@ app.post('/patientscan', async (req, res)=> {
     const { userid, linkdownload } = req.body
     console.log("patient scan", userid, linkdownload)
     try {
-        const eye_condition = await axios.post(`http://localhost:${port}/predict-eye`, { linkdownload })
+        const eye_condition = await axios.post(`http://localhost:${port}/predict_face`, { linkdownload })
         console.log(eye_condition.data)
         res.send({status: "OK"})
     }catch(e){
@@ -89,19 +103,6 @@ app.post('/questionnaire', (req, res)=>{
     res.send("ok")
 })
 
-app.post('/patientscan', (req, res)=> {
-    const { linkdownload } = req.body
-    console.log("patient scan", linkdownload)
-    res.send({status: "OK"})
-})
-
-app.post('/questionnaire', (req, res)=>{
-    console.log("here!")
-    const userid = req.body.userid
-    const formdata = req.body.formData
-    console.log(formdata)
-    res.send("ok")
-})
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
