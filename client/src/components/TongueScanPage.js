@@ -5,7 +5,7 @@ import '../styles/Spinner.css';  // Optional if you want to move the CSS out
 import '../styles/PatientScanPage.css';
 const styles = {
     spinnerContainer: {
-        marginTop: '50px',
+        marginTop: '10px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -24,7 +24,7 @@ const Spinner = () => {
     return (
         <div style={styles.spinnerContainer}>
             <div style={styles.spinner}></div>
-            <p>Loading...</p>
+            <p>Analyzing...</p>
         </div>
     );
 };
@@ -115,8 +115,8 @@ const TongueScanPage = () => {
 
     return (
         <div className="container">
-            <h1 style={{ marginTop: "20px" }}>Camera Capture</h1>
-            <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front and look at the camera</h2>
+            <h1 style={{ marginTop: "20px" }}>Check Your Tongue Status</h1>
+            <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front, stick out your tongue and look at the camera</h2>
             <div className="video-container">
                 {isCaptured ? (
                     <>
@@ -126,8 +126,7 @@ const TongueScanPage = () => {
                                 {/* Conditionally render 'Next' button or loading spinner */}
                                 {loading ? (
                                     <>
-                                    <Spinner />
-                                    <p>Analyzing...</p>
+                                        <Spinner />
                                     </>
                                 ) : (
                                 <>

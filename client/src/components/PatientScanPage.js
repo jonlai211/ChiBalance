@@ -105,7 +105,7 @@ const PatientScanPage = () => {
 
     return (
         <div className="container">
-            <h1 style={{ marginTop: "20px" }}>Camera Capture</h1>
+            <h1 style={{ marginTop: "20px" }}>Check Your Face Status</h1>
             <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front and look at the camera</h2>
             <div className="video-container">
                 {isCaptured ? (
