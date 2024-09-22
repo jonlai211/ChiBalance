@@ -28,7 +28,7 @@ const DiagnosisPage = () => {
         setAge(res.data.age);
         setAnswers(res.data.answers);
         setDiagnosis(res.data.diagnosis);
-        setObservation(res.data.observations);
+        setObservation(res.data.description);
       } catch (e) {
         console.error('Error caught:', e);
       } finally {
@@ -71,22 +71,32 @@ const DiagnosisPage = () => {
         </div> */}
         <div className="content">
           <div className="patient-analyze">
-            <ul>
-              {observation?.length > 0 ? (
-                observation.map((obs, index) => <li key={index}>{obs}</li>)
-              ) : (
-                <li>No observations available.</li>
-              )}
-            </ul>
+            {/*<ul>*/}
+            {/*  {observation?.length > 0 ? (*/}
+            {/*    observation.map((obs, index) => <li key={index}>{obs}</li>)*/}
+            {/*  ) : (*/}
+            {/*    <li>No observations available.</li>*/}
+            {/*  )}*/}
+            {/*</ul>*/}
+            {observation ? (
+                <p> {observation} </p>
+            ) : (
+                <p> No observations available.</p>
+            )}
           </div>
           <div className="patient-analyze">
-            <ul>
-              {diagnosis?.length > 0 ? (
-                diagnosis.map((diag, index) => <li key={index}>{diag}</li>)
-              ) : (
-                <li>No diagnosis available.</li>
-              )}
-            </ul>
+            {/*<ul>*/}
+            {/*  {diagnosis?.length > 0 ? (*/}
+            {/*    diagnosis.map((diag, index) => <li key={index}>{diag}</li>)*/}
+            {/*  ) : (*/}
+            {/*    <li>No diagnosis available.</li>*/}
+            {/*  )}*/}
+            {/*</ul>*/}
+            {diagnosis ? (
+                <p> {diagnosis} </p>
+            ) : (
+                <p> No diagnosis available.</p>
+            )}
           </div>
         </div>
       </div>

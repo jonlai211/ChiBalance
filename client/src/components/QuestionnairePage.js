@@ -59,7 +59,8 @@ const QuestionnairePage = () => {
     } catch(e) {
         console.error(e)
     }
-    history.push('/tongue', { userid })
+    // history.push('/tongue', { userid })
+    history.push('/patientscan', { userid })
   };
   return (
     <div className="container">

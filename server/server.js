@@ -5,6 +5,10 @@ import dotenv from 'dotenv';
 import fs from 'fs'; // Added fs import for file handling
 import path from 'path';
 import multer from 'multer';
+import {classify, predict} from './classification.js';
+import {downloadfiledirectory} from "./downdir.js";
+import {exec} from "child_process";
+
 import { classify } from './classification.js';
 const server = process.env.SERVER || "http://localhost:4000";
 const port = process.env.PORT || 4000;
@@ -24,6 +28,7 @@ console.log('CORS middleware enabled.'); // Log CORS middleware
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads'))); // Changed __dirname to process.cwd()
 console.log('Static files served from /uploads.'); // Log static file serving
 
+const record = {};
 // Set up multer to handle image uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -38,9 +43,6 @@ console.log('Multer storage configured.'); // Log multer configuration
 
 // Add this line before your routes
 app.use(express.json()); // This allows express to parse JSON bodies
-
-
-
 
 // Route to handle image uploads and call the OpenAI API
 app.post('/classify', upload.single('file'), async (req, res) => {
@@ -112,18 +114,64 @@ const defaultPatientDiagnosisAndObservation = {
     diagnosis: ["1111", '2222', '3333', '4444']
 };
 
-app.post('/diagnosis', (req, res) => {
-    const { userid } = req.body;
-    console.log("diagnosis", userid);
-    console.log(defaultPatientDiagnosisAndObservation);
-    res.send(defaultPatientDiagnosisAndObservation);
+app.post('/diagnosis', (req, res)=> {
+    const { userid } = req.body
+    console.log("diagnosis", userid)
+    res.send(record[userid] ? record[userid] : {} )
+})
+
+app.post('/predict_face', (req, res) => {
+    console.log(downloadfiledirectory)
+    const { linkdownload } = req.body;  // Image path from the frontend
+
+    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, async (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing script: ${error.message}`);
+            return res.status(500).send('Error occurred while executing Python script');
+        }
+
+        if (stderr) {
+            console.error(`Script error output: ${stderr}`);
+        }
+
+        console.log(`Python script output: ${stdout}`);
+
+        // Assuming stdout contains the prediction results in JSON format
+        const predictions = JSON.parse(stdout);
+        const descriptions = predictions.map(prediction => `${prediction.object} ${prediction.description}`);
+
+        const combinedDescription = descriptions.join(" ");
+        console.log(`Combined Observation Description: ${combinedDescription}`);
+
+        try {
+            const gptResponse = await predict(combinedDescription);
+            res.send({description: combinedDescription, diagnosis: gptResponse });
+            console.log(`Response: ${gptResponse}`);
+        } catch (apiError) {
+            console.error(`Error calling API: ${apiError.message}`);
+            res.status(500).send('Error occurred while calling API');
+        }
+    });
 });
 
-app.post('/patientscan', (req, res) => {
-    const { linkdownload } = req.body;
-    console.log("patient scan", linkdownload);
-    res.send({ status: "OK" });
-});
+
+app.post('/patientscan', async (req, res)=> {
+    const { userid, linkdownload } = req.body
+    console.log("patient scan", userid, linkdownload)
+    try {
+        const facial_condition = await axios.post(`http://localhost:${port}/predict_face`, { linkdownload })
+        const {description, diagnosis} = facial_condition.data
+        console.log(description, diagnosis)
+        const user = record[userid] ? record[userid] : {}
+        user["description"] = description
+        user['diagnosis'] = diagnosis
+        record[userid] = user
+        res.send({status: "OK"})
+    }catch(e){
+        console.error(e)
+    }
+
+})
 
 app.post('/questionnaire', (req, res) => {
     console.log("here!");
@@ -134,10 +182,12 @@ app.post('/questionnaire', (req, res) => {
         fs.mkdirSync('questionnaire'); // Create the directory if it doesn't exist
     }
     fs.writeFileSync('questionnaire/1.json', JSON.stringify(formdata)); // Convert formdata to a string
+    user["formdata"] = formdata
+    record[userid] = user
     console.log(formdata);
     res.send("ok");
 });
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
+    console.log(`Listening on port ${port}`)
+})
