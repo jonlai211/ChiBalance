@@ -5,6 +5,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const { downloadfiledirectory } = require('./downdir.js');
+
 const port = 4000
 
 app.use(bodyParser.json());
@@ -71,10 +72,11 @@ app.post('/patientscan', async (req, res)=> {
     try {
         const eye_condition = await axios.post(`http://localhost:${port}/predict-eye`, { linkdownload })
         console.log(eye_condition.data)
+        res.send({status: "OK"})
     }catch(e){
         console.error(e)
     }
-    res.send({status: "OK"})
+
 })
 
 app.post('/questionnaire', (req, res)=>{

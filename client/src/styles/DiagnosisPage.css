@@ -1,19 +1,29 @@
 .diagnosis-page {
-    align-items: center;
-    background-color: white;
-    justify-content: center;
-    display: flex;
-    height: 100%;
-    width: 100%;         
+    max-width: 1000px;
+	margin: 50px auto;
+	padding: 50px;
+	border-radius: 8px;
+	background-color: #f7f9fc;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	font-style: normal;
+	font-weight: 700;
+	font-family: "SUSE", sans-serif;
+	font-size: 1.1rem;
+	line-height: 40px;
+	color: #000000;
 }
 
+
+
 .diagnosis-page .center-item{
-    align-items: center;
-    display: inline-flex;
+    display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
     flex-direction: column;    
-    gap: 30px;
+    gap: 10px;
     position: relative;   
-    width: 40%; 
 }
 
 .diagnosis-page .center-item .header {
@@ -22,18 +32,49 @@
     text-align: center;        
     align-items: center;
     flex: 0 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0%;
+}
+
+.diagnosis-page .center-item .header h1 {
+	text-align: center;
+	color: #458ff6;	
+	margin-bottom: 10px;
+}
+
+
+.diagnosis-page .center-item .header h2 {
+	text-align: left;
+	color: grey;
+	margin-bottom: 10px;
+}
+.diagnosis-page .center-item .header .subpart {
+    width: 50%;
+    flex: 0 0 auto;
 }
 
 .diagnosis-page .center-item .content {
-    text-align: center;
     flex: 0 0 auto;
-}
-.diagnosis-page .center-item .content .patient-diagnosis {
-    text-align: center;
-    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
 }
 
-.diagnosis-page .center-item .body .patient-observation {
+.diagnosis-page .center-item .content .patient-analyze {
+    margin: 50px auto;
+	padding: 50px;
+	border-radius: 8px;
+    width: 40%;
+	background-color: #fefefe;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	font-style: normal;
+	font-weight: 700;
+	font-family: "SUSE", sans-serif;
+	font-size: 1.1rem;
+	line-height: 40px;
+	color: #000000;
     text-align: center;
     flex: 0 0 auto;
 }

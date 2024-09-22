@@ -9,6 +9,7 @@ const DiagnosisPage = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(18);
   const [answers, setAnswers] = useState([]);
+  const [imageSrc, setImageSrc] = useState('');
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
@@ -18,10 +19,10 @@ const DiagnosisPage = () => {
   console.log(userid);
 
 
+
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
-
         const res = await axios.post("http://localhost:4000/diagnosis", { userid });
         setName(res.data.name);
         setAge(res.data.age);
@@ -58,21 +59,18 @@ const DiagnosisPage = () => {
   return (
     <div className="diagnosis-page">
       <div className="center-item">
-        <div className="header">Patient Name: {name}</div>
-        <div className="header">Patient Age: {age}</div>
+        <div className="header">
+            <h1>Analysis</h1>
+            <h2>
+                Below is the analysis of your health condition
+            </h2>
+        </div>
+        {/* <div className="header">
+            <div className="subpart"> Patient Name: {name}</div>
+            <div className="subpart">Patient Age: {age}</div>
+        </div> */}
         <div className="content">
-          <div className="patient-diagnosis">
-            <strong>Diagnosis:</strong>
-            <ul>
-              {diagnosis?.length > 0 ? (
-                diagnosis.map((diag, index) => <li key={index}>{diag}</li>)
-              ) : (
-                <li>No diagnosis available.</li>
-              )}
-            </ul>
-          </div>
-          <div className="patient-observation">
-            <strong>Observations:</strong>
+          <div className="patient-analyze">
             <ul>
               {observation?.length > 0 ? (
                 observation.map((obs, index) => <li key={index}>{obs}</li>)
@@ -81,13 +79,12 @@ const DiagnosisPage = () => {
               )}
             </ul>
           </div>
-          <div className="patient-answers">
-            <strong>Answers:</strong>
+          <div className="patient-analyze">
             <ul>
-              {answers?.length > 0 ? (
-                answers.map((ans, index) => <li key={index}>{ans}</li>)
+              {diagnosis?.length > 0 ? (
+                diagnosis.map((diag, index) => <li key={index}>{diag}</li>)
               ) : (
-                <li>No answers available.</li>
+                <li>No diagnosis available.</li>
               )}
             </ul>
           </div>
