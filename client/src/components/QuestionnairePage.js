@@ -1,34 +1,16 @@
 import React, { useState } from "react";
-import styles from "../styles/QuestionnairePage.module.css"; // 스타일 추가
+import "../styles/QuestionnairePage.css";
 import { useHistory } from "react-router-dom";
 import SHA256 from 'crypto-js/sha256';
 import axios from 'axios';
+import {questionnaire, defaultQuestionnaire} from '../api/api.js'
 
 const QuestionnairePage = () => {
-  const [formData, setFormData] = useState({
-    name: "UserAgent",
-    birthDate: {
-      month: 1,
-      day: 1,
-      year: 1924,
-    },
-    gender: "male",
-    coldHeat: "cold",
-    sweating: "yes",
-    headBodyIssues: "yes",
-    bowelMovements: "regular",
-    diet: "balanced",
-    chestAbdomenIssues: "yes",
-    hearingIssues: "yes",
-    thirst: "yes",
-    pastIllnesses: "none",
-    knownCauses: "none",
-    additionalSymptoms: "",
-    // photo: null,
-  });
+  const [formData, setFormData] = useState(defaultQuestionnaire);
 
-//   const [photoPreview, setPhotoPreview] = useState(null); // 사진 미리보기 상태 추가
+  const [photoPreview, setPhotoPreview] = useState(null);
   const history = useHistory();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "month" || name === "day" || name === "year") {
@@ -47,14 +29,14 @@ const QuestionnairePage = () => {
     }
   };
 
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     setFormData({
-//       ...formData,
-//       photo: file,
-//     });
-//     setPhotoPreview(URL.createObjectURL(file)); // 미리보기 URL 설정
-//   };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      photo: file,
+    });
+    setPhotoPreview(URL.createObjectURL(file));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,10 +45,6 @@ const QuestionnairePage = () => {
     const input = formData.name + formData.birthDate + Date.now()
     const userid = SHA256(input).toString();
     console.log(userid)
-    setFormData((prevData) => ({
-        ...prevData,
-        userid: userid,
-      }));
     console.log(formData)
     try {
         const res = await axios.post("http://localhost:4000/questionnaire", {userid, formData});
@@ -75,13 +53,13 @@ const QuestionnairePage = () => {
     }
     history.push('/patientscan', { userid })
   };
-
   return (
-    <div className={styles.container}>
-      <h2>New Patient Questionnaire</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label>
-          Name:
+    <div className="container">
+      <h1>New Patient Questionnaire</h1>
+      <h2>Personal Information</h2>
+      <form onSubmit={handleSubmit} className="form">
+        <div className="form-group">
+          <label>Name:</label>
           <input
             type="text"
             name="name"
@@ -89,246 +67,69 @@ const QuestionnairePage = () => {
             onChange={handleChange}
             required
           />
-        </label>
+        </div>
 
-        <label>
-          Birthdate:
-          <div style={{ display: "flex", gap: "10px" }}>
+        <div className="form-group birthdateGenderRow">
+          <div className="birthdate-container">
+            <label>Birth Date (YYYY-MM-DD):</label>
+            <input
+              type="date"
+              name="birthDate"
+              value={formData.birthDate}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="gender-container">
+            <label>Gender:</label>
             <select
-              name="month"
-              value={formData.birthDate.month}
+              name="gender"
+              value={formData.gender}
               onChange={handleChange}
               required
             >
-              <option value="">Month</option>
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
+          </div>
+        </div>
+
+        <h2>Health Questions</h2>
+
+        {questionnaire.map(({ question, name, options }) => (
+          <div className="form-group" key={name}>
+            <label>{question}</label>
             <select
-              name="day"
-              value={formData.birthDate.day}
+              name={name}
+              value={formData[name]}
               onChange={handleChange}
               required
             >
-              <option value="">Day</option>
-              {Array.from({ length: 31 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-            <select
-              name="year"
-              value={formData.birthDate.year}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Year</option>
-              {Array.from({ length: 100 }, (_, i) => (
-                <option key={2023 - i} value={2023 - i}>
-                  {2023 - i}
+              <option value="">Select...</option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
                 </option>
               ))}
             </select>
           </div>
-        </label>
+        ))}
 
-        <label>
-          Gender:
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </label>
-
-        <h3>Health Questions</h3>
-
-        <label>
-          1. Have you experienced any cold or heat sensations?
-          <select
-            name="coldHeat"
-            value={formData.coldHeat}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="cold">Cold</option>
-            <option value="hot">Hot</option>
-            <option value="normal">Normal</option>
-          </select>
-        </label>
-
-        <label>
-          2. Have you been sweating more than usual?
-          <select
-            name="sweating"
-            value={formData.sweating}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          3. Any issues with your head or body?
-          <select
-            name="headBodyIssues"
-            value={formData.headBodyIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          4. How are your bowel movements?
-          <select
-            name="bowelMovements"
-            value={formData.bowelMovements}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="regular">Regular</option>
-            <option value="irregular">Irregular</option>
-            <option value="constipation">Constipation</option>
-            <option value="diarrhea">Diarrhea</option>
-          </select>
-        </label>
-
-        <label>
-          5. How is your diet?
-          <select
-            name="diet"
-            value={formData.diet}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="balanced">Balanced</option>
-            <option value="unbalanced">Unbalanced</option>
-            <option value="restricted">Restricted</option>
-          </select>
-        </label>
-
-        <label>
-          6. Any chest or abdominal issues?
-          <select
-            name="chestAbdomenIssues"
-            value={formData.chestAbdomenIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          7. Have you had any hearing issues?
-          <select
-            name="hearingIssues"
-            value={formData.hearingIssues}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          8. Are you feeling excessively thirsty?
-          <select
-            name="thirst"
-            value={formData.thirst}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-        </label>
-
-        <label>
-          9. Do you have any past illnesses we should know about?
-          <select
-            name="pastIllnesses"
-            value={formData.pastIllnesses}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="none">None</option>
-            <option value="known">Known</option>
-          </select>
-        </label>
-
-        <label>
-          10. Are there any known causes for your symptoms?
-          <select
-            name="knownCauses"
-            value={formData.knownCauses}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select...</option>
-            <option value="none">None</option>
-            <option value="known">Known</option>
-          </select>
-        </label>
-
-        <label>
-          (Optional) If you have any additional symptoms that the doctor should
-          know about, please describe them:
+        <div className="form-group">
+          <label>
+            (Optional) If you have any additional symptoms that the doctor
+            should know about, please describe them:
+          </label>
           <textarea
             name="additionalSymptoms"
             value={formData.additionalSymptoms}
             onChange={handleChange}
             placeholder="Describe your additional symptoms..."
-            style={{ height: "100px", width: "100%" }} // 크기 조절
+            style={{ height: "100px", width: "100%" }}
           />
-        </label>
-
-        {/* <label>
-          Upload Photo:
-          <input
-            type="file"
-            name="photo"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </label>
-
-        {photoPreview && (
-          <div style={{ marginTop: "10px" }}>
-            <h4>Photo Preview:</h4>
-            <img
-              src={photoPreview}
-              alt="Uploaded"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
-            />
-          </div>
-        )} */}
+        </div>
 
         <button type="submit">Submit</button>
       </form>
