@@ -28,4 +28,4 @@ server/src/model/
 server/src/img/
 
 # for directory storing dtaa
-downdir.js
+server/downdir.js
