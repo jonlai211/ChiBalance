@@ -5,7 +5,6 @@ import {initsvg} from '../api/api.js'
 
 const InitialPage = () => {
   const history = useHistory(); // Initialize navigate
-  
 
   return (
     <div className="initial-container">

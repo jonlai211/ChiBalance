@@ -1,6 +1,37 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import axios from 'axios';
+import '../styles/Spinner.css';  // Optional if you want to move the CSS out
+import '../styles/PatientScanPage.css';
+
+const styles = {
+    spinnerContainer: {
+        marginTop: '50px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    spinner: {
+        border: '8px solid #f3f3f3', /* Light grey */
+        borderTop: '8px solid #3498db', /* Blue */
+        borderRadius: '50%',
+        width: '60px',
+        height: '60px',
+        animation: 'spin 1s linear infinite',
+    },
+};
+
+
+const Spinner = () => {
+    return (
+        <div style={styles.spinnerContainer}>
+            <div style={styles.spinner}></div>
+            <p>Loading...</p>
+        </div>
+    );
+};
+
 
 const PatientScanPage = () => {
     const videoRef = useRef(null);
@@ -95,7 +126,7 @@ const PatientScanPage = () => {
                                 <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
                                 {/* Conditionally render 'Next' button or loading spinner */}
                                 {loading ? (
-                                    <p>Submitting...</p>
+                                    <Spinner/>
                                 ) : (
                                 <>
                                     <button onClick={() => history.go(0)} className="btn">
