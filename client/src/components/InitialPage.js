@@ -11,12 +11,9 @@ const InitialPage = () => {
     <div className="initial-container">
       <div className="initial-content">
         <div className="initial-text-section">
-          <h1>Welcome to TCM Helper!</h1>
+          <h1>Welcome to ChiBalance!</h1>
           <p>
-            TCM delivers quick and reliable symptom diagnosis, making healthcare
-            accessible anytime, anywhere. Trafalgar offers progressive and
-            affordable solutions, empowering everyone to manage their health
-            effortlessly, whether online or on mobile.
+            Inspired by Traditional Chinese Medicine (TCM), we are developing an AI-powered medical diagnostic service to address the needs of individuals who struggle to access healthcare. Our focus is on providing timely support for those unable to visit a doctor due to mobility issues, busy schedules, long wait times, or discomfort with in-person consultations.
           </p>
           <button
             onClick={() => history.push("/questionnairepage")}

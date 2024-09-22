@@ -22,7 +22,6 @@
 	justify-content: space-between;
 	width: 100%;
     flex-direction: column;    
-    gap: 10px;
     position: relative;   
 }
 
@@ -49,6 +48,7 @@
 	color: grey;
 	margin-bottom: 10px;
 }
+
 .diagnosis-page .center-item .header .subpart {
     width: 50%;
     flex: 0 0 auto;
@@ -57,14 +57,40 @@
 .diagnosis-page .center-item .content {
     flex: 0 0 auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    gap: 10%;
 }
 
-.diagnosis-page .center-item .content .patient-analyze {
-    margin: 50px auto;
-	padding: 50px;
+.diagnosis-page .center-item .content .recommend {
+	margin: 25px auto;
+	padding: 25px;
+	border-radius: 8px;
+    width: 90%;
+	height: 40%;
+	background-color: #fefefe;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	font-style: normal;
+	font-weight: 700;
+	font-family: "SUSE", sans-serif;
+	font-size: 1.1rem;
+	line-height: 40px;
+	color: #000000;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+.diagnosis-page .center-item .content .observation_block {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row; /* Change to row for horizontal layout */
+    justify-content: center;
+    width: 100%;
+    gap: 20px; /* Adjust gap as needed */
+}
+
+.diagnosis-page .center-item .content .observation_block .patient-analyze {
+    margin: 25px auto;
+	padding: 25px;
 	border-radius: 8px;
     width: 40%;
 	background-color: #fefefe;

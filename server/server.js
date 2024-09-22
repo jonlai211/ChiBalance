@@ -118,8 +118,8 @@ const defaultPatientDiagnosisAndObservation = {
 
 app.post('/diagnosis', (req, res)=> {
     const { userid } = req.body
-    console.log("diagnosis", userid)
-    res.send(record[userid] ? record[userid] : {} )
+    console.log(record[userid])
+    res.send(record[userid]['tongueanalysis'] ? record[userid]['tongueanalysis'] : {} )
 })
 
 app.post('/predict_face', (req, res) => {
@@ -170,8 +170,8 @@ app.post('/patientscan', async (req, res)=> {
 
         const file = downloadfiledirectory + linkdownload2
         const tongue_condition = await axios.post(`http://localhost:${port}/classify`, { userid, file, description, diagnosis })
-        console.log(tongue_condition.data)
-        user['tongueanalysis'] = tongue_condition.data.analysis
+        console.log("final analysis", tongue_condition.data)
+        user['tongueanalysis'] = tongue_condition.data
         record[userid] = user
         res.send({status: "OK"})
     }catch(e){
