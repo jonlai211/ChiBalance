@@ -17,9 +17,13 @@ const DiagnosisPage = () => {
   const userid = location.state?.userid; // Ensure location.state is available
   console.log(userid);
 
+  const userid = location.state.userid;
+  console.log(userid);
+
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
+
         const res = await axios.post("http://localhost:4000/diagnosis", { userid });
         setName(res.data.name);
         setAge(res.data.age);

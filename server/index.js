@@ -87,6 +87,20 @@ app.post('/questionnaire', (req, res)=>{
     res.send("ok")
 })
 
+app.post('/patientscan', (req, res)=> {
+    const { linkdownload } = req.body
+    console.log("patient scan", linkdownload)
+    res.send({status: "OK"})
+})
+
+app.post('/questionnaire', (req, res)=>{
+    console.log("here!")
+    const userid = req.body.userid
+    const formdata = req.body.formData
+    console.log(formdata)
+    res.send("ok")
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
