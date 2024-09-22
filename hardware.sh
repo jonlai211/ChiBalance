@@ -18,8 +18,6 @@ pip install Flask
 pip freeze > requirements.txt
 
 # Initialize Git repository
-git init
-
 # Create .gitignore file
 echo "venv/" > .gitignore
 echo "__pycache__/" >> .gitignore
@@ -83,8 +81,5 @@ This is a simple Flask project.
 EOL
 
 # Add and commit files to Git
-git add .
-git commit -m "Initial commit"
 
 echo "Setup complete. Don't forget to push your code to GitHub!"
-
