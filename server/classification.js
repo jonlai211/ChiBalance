@@ -6,7 +6,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY }); // Ensure API
 console.log('OpenAI API Key is set.'); // Log a message indicating the API key is set
 console.log('OpenAI client initialized successfully.'); // Log a message indicating the OpenAI client is initialized
 const userPrompt = `${process.env.USER_PROMPT}`;
-const systemPrompt = `${process.env.SYSTEM_PROMPT}`;
+const systemPrompt = `${process.env.SYSTEM_CLASSIFY_PROMPT}`;
 const systemPredictPrompt = `${process.env.SYSTEM_PREDICT_PROMPT}`;
 console.log('User prompt:', userPrompt); // Log the user prompt
 console.log('System prompt:', systemPrompt); // Log the system prompt
@@ -24,7 +24,7 @@ export const classify = async (base64ImageUrl, surveyAnswers, description, diagn
           role: "user",
           content: [
             { type: "text",
-                text: `${userPrompt} ${surveyAnswers}`,
+                text: `Survey:${surveyAnswers}\n Description:${description}\n Diagnosis:${diagnosis}`
             },
             {
               type: "image_url",
