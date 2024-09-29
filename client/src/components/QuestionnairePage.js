@@ -48,7 +48,7 @@ const QuestionnairePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log("formdata", formData);
     // alert("Submitted!");
     const input = formData.name + formData.birthDate + Date.now()
     const userid = SHA256(input).toString();

@@ -45,7 +45,7 @@ app.use(express.json()); // This allows express to parse JSON bodies
 // Route to handle image uploads and call the OpenAI API
 app.post('/classify', upload.single('file'), async (req, res) => {
     try {
-        const file = req.file;
+        const  { userid, file, description, diagnosis } = req.body;
 
         console.log('Received file:', file); // Debug log for received file
 
@@ -56,14 +56,17 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         console.log('File uploaded successfully');
 
         // Prepare the image URL
-        const imageUrl = `http://localhost:${process.env.PORT || 4000}/uploads/${file.filename}`; // Adjust this based on your file serving setup
+        // const imageUrl = `http://localhost:${process.env.PORT || 4000}/uploads/${file}`; // Adjust this based on your file serving setup
 
-        console.log('Image URL:', imageUrl); // Debug log for image URL
+        // console.log('Image URL:', imageUrl); // Debug log for image URL
 
-        // Fetch the image and convert to Base64
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-        const base64Image = Buffer.from(response.data, 'binary').toString('base64');
-        const base64ImageUrl = `data:${file.mimetype};base64,${base64Image}`;
+        // // Fetch the image and convert to Base64
+        // const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        // Read the image file and convert it to Base64
+        const mimetype = "image/png"
+        const fileBuffer = fs.readFileSync(file);
+        const base64Image = Buffer.from(fileBuffer, 'binary').toString('base64');
+        const base64ImageUrl = `data:${mimetype};base64,${base64Image}`;
 
         console.log('Base64 Image URL prepared.'); // Log base64 image URL preparation
 
@@ -73,13 +76,14 @@ app.post('/classify', upload.single('file'), async (req, res) => {
         // Call the classify function with the path of the image
         //tell what questionnaire.txt inside the questionnaire folder
         // const analysis = await classify(base64ImageUrl, fs.readFileSync('1.txt', 'utf8'));
-        console.log(fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8'));
-        questionnaire = fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8');
-        const analysis = await classify(base64ImageUrl, questionnaire);
+        // console.log(fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8'));
+        // questionnaire = fs.readFileSync(path.join(process.cwd(), './questionnaire/1.json'), 'utf8');
+        questionnaire = record[userid]['formData']
+        const analysis = await classify(base64ImageUrl, questionnaire, description, diagnosis);
         console.log('ANALYSIS:', analysis);
 
         // Return the analysis to the frontend
-        res.json({ analysis });
+        res.send( analysis );
         console.log('Analysis sent to frontend.'); // Log analysis response
     } catch (error) {
         console.error('Error during image processing:', error); // Debug log for error
@@ -114,15 +118,15 @@ const defaultPatientDiagnosisAndObservation = {
 
 app.post('/diagnosis', (req, res)=> {
     const { userid } = req.body
-    console.log("diagnosis", userid)
-    res.send(record[userid] ? record[userid] : {} )
+    console.log(record[userid])
+    res.send(record[userid]['tongueanalysis'] ? record[userid]['tongueanalysis'] : {} )
 })
 
 app.post('/predict_face', (req, res) => {
     console.log(downloadfiledirectory)
-    const { linkdownload } = req.body;  // Image path from the frontend
+    const { linkdownload1 } = req.body;  // Image path from the frontend
 
-    exec(`python3 src/predict.py ${downloadfiledirectory}${linkdownload}`, async (error, stdout, stderr) => {
+    exec(`python3.10 src/predict.py ${downloadfiledirectory}${linkdownload1}`, async (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing script: ${error.message}`);
             return res.status(500).send('Error occurred while executing Python script');
@@ -154,15 +158,20 @@ app.post('/predict_face', (req, res) => {
 
 
 app.post('/patientscan', async (req, res)=> {
-    const { userid, linkdownload } = req.body
-    console.log("patient scan", userid, linkdownload)
+    const { userid, linkdownload1, linkdownload2 } = req.body
+    console.log("patient scan", userid, linkdownload1, linkdownload2)
     try {
-        const facial_condition = await axios.post(`http://localhost:${port}/predict_face`, { linkdownload })
+        const facial_condition = await axios.post(`http://localhost:${port}/predict_face`, { linkdownload1 })
         const {description, diagnosis} = facial_condition.data
         console.log(description, diagnosis)
         const user = record[userid] ? record[userid] : {}
         user["description"] = description
         user['diagnosis'] = diagnosis
+
+        const file = downloadfiledirectory + linkdownload2
+        const tongue_condition = await axios.post(`http://localhost:${port}/classify`, { userid, file, description, diagnosis })
+        console.log("final analysis", tongue_condition.data)
+        user['tongueanalysis'] = tongue_condition.data
         record[userid] = user
         res.send({status: "OK"})
     }catch(e){
@@ -173,16 +182,17 @@ app.post('/patientscan', async (req, res)=> {
 
 app.post('/questionnaire', (req, res) => {
     console.log("here!");
-    const userid = req.body.userid;
-    const formdata = req.body.formData;
+    const { userid, formData} = req.body;
+    console.log("formdata", formData)
     // Ensure the questionnaire directory exists
-    if (!fs.existsSync('questionnaire')) {
-        fs.mkdirSync('questionnaire'); // Create the directory if it doesn't exist
-    }
-    fs.writeFileSync('questionnaire/1.json', JSON.stringify(formdata)); // Convert formdata to a string
-    user["formdata"] = formdata
+    // if (!fs.existsSync('questionnaire')) {
+    //     fs.mkdirSync('questionnaire'); // Create the directory if it doesn't exist
+    // }
+    // fs.writeFileSync('questionnaire/1.json', JSON.stringify(formData)); // Convert formdata to a string
+    const user = record[userid] ? record[userid]: {}
+    user["formData"] = formData
     record[userid] = user
-    console.log(formdata);
+    console.log(formData);
     res.send("ok");
 });
 

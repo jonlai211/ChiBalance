@@ -8,14 +8,14 @@ We analyze tongue condition through a combination of visual inspection and data 
 
 ## Demo Video
 
-[Insert link to your demo video here]
+[![Demo Video](https://img.youtube.com/vi/McSuSOSRtOI/0.jpg)](https://youtu.be/McSuSOSRtOI)
 
 ## Team Members
 
-- Xinran Liu
-- Kaijie Lai
-- Chloe Yun
-- Ho Lok Cheung
+- University of Pennsylvania - MS EE Kaijie Lai
+- University of Pennsylvania - CIS Xinran Liu
+- University of Pennsylvania - MCIT Chloe Yun
+- De Anza College - CS Ho Lok Cheung
 
 ## Submission Track
 
@@ -32,8 +32,6 @@ Most Technically Complex Hack
 Best Design
 Best Hardware Hack
 Best Next-Gen LLM-Powered Application (Sponsored by Tune)
-
-## Technologies Used
 
 - Frontend: React.js
   1. Other: axios, crypto-js, react, react-dom, react-markdown, react-router-dom, react-scripts, react-webcam, web-vitals, webcam

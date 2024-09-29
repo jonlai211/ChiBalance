@@ -5,7 +5,7 @@ import '../styles/Spinner.css';  // Optional if you want to move the CSS out
 import '../styles/PatientScanPage.css';
 const styles = {
     spinnerContainer: {
-        marginTop: '50px',
+        marginTop: '10px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -24,18 +24,18 @@ const Spinner = () => {
     return (
         <div style={styles.spinnerContainer}>
             <div style={styles.spinner}></div>
-            <p>Loading...</p>
+            <p>Analyzing...</p>
         </div>
     );
 };
 
 
-const PatientScanPage = () => {
+const TongueScanPage = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isCaptured, setIsCaptured] = useState(false);
     const [imageSrc, setImageSrc] = useState(null);
-    const [linkdownload, setLinkDownload] = useState("");
+    const [linkdownload2, setLinkDownload] = useState("");
     const [loading, setLoading] = useState(false); // Loading state
 
     const initCamera = async () => {
@@ -51,12 +51,13 @@ const PatientScanPage = () => {
     const history = useHistory();
 
     const userid = location.state.userid;
-    console.log(userid);
+    const linkdownload1 = location.state.linkdownload;
+    console.log(userid, linkdownload1);
 
     const downloadImage = (dataURL) => {
         const link = document.createElement('a');
         link.href = dataURL;
-        const downloadName = `${userid + Date.now()}.png`;
+        const downloadName = `${userid + Date.now()}-2.png`;
         setLinkDownload(downloadName);
         link.download = downloadName;
 
@@ -96,7 +97,16 @@ const PatientScanPage = () => {
     };
 
     const submitPicture = async () => {
-        history.push('/tonguescan', { userid, linkdownload });
+        setLoading(true);  // Start loading
+        try {
+            console.log(userid, linkdownload1, linkdownload2)
+            const res = await axios.post("http://localhost:4000/patientscan", { userid, linkdownload1, linkdownload2 });
+        } catch (error) {
+            console.error("Error submitting picture:", error);
+        } finally {
+            setLoading(false);  // Stop loading
+            history.push('/diagnosis', { userid, linkdownload1, linkdownload2 });
+        }
     };
 
     useEffect(() => {
@@ -105,8 +115,8 @@ const PatientScanPage = () => {
 
     return (
         <div className="container">
-            <h1 style={{ marginTop: "20px" }}>Check Your Face Status</h1>
-            <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front and look at the camera</h2>
+            <h1 style={{ marginTop: "20px" }}>Check Your Tongue Status</h1>
+            <h2 style={{ marginTop: "20px", textAlign: 'center' }}>Please face front, stick out your tongue and look at the camera</h2>
             <div className="video-container">
                 {isCaptured ? (
                     <>
@@ -115,7 +125,9 @@ const PatientScanPage = () => {
                                 <img src={imageSrc} alt="Captured" style={{ width: "100%" }} />
                                 {/* Conditionally render 'Next' button or loading spinner */}
                                 {loading ? (
-                                    <p>Submitting...</p>
+                                    <>
+                                        <Spinner />
+                                    </>
                                 ) : (
                                 <>
                                     <button onClick={() => history.go(0)} className="btn">
@@ -141,4 +153,4 @@ const PatientScanPage = () => {
     );
 };
 
-export default PatientScanPage;
+export default TongueScanPage;

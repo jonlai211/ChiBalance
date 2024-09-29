@@ -13,6 +13,8 @@ import PatientScanPage from "./components/PatientScanPage.js";
 import QuestionnairePage from "./components/QuestionnairePage.js";
 import InitialPage from "./components/InitialPage.js";
 import TongueAnalysis from "./components/TongueAnalysis.js";
+import TongueScanPage from "./components/TongueScanPage.js";
+
 function App() {
   return (
     <Router>
@@ -23,6 +25,9 @@ function App() {
           </Route>
           <Route path="/patientscan">
             <PatientScanPage />
+          </Route>
+          <Route path="/tonguescan">
+            <TongueScanPage />
           </Route>
           <Route path="/questionnairepage">
             <QuestionnairePage />

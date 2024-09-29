@@ -6,10 +6,7 @@ import '../styles/DiagnosisPage.css';
 const DiagnosisPage = () => {
   const [observation, setObservation] = useState([]);
   const [diagnosis, setDiagnosis] = useState([]);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState(18);
-  const [answers, setAnswers] = useState([]);
-  const [imageSrc, setImageSrc] = useState('');
+  const [recommendation, setRecommendation] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
@@ -18,17 +15,17 @@ const DiagnosisPage = () => {
   const userid = location.state?.userid; // Ensure location.state is available
   console.log(userid);
 
-
-
   useEffect(() => {
     const getDiagnosis = async () => {
       try {
         const res = await axios.post("http://localhost:4000/diagnosis", { userid });
-        setName(res.data.name);
-        setAge(res.data.age);
-        setAnswers(res.data.answers);
-        setDiagnosis(res.data.diagnosis);
-        setObservation(res.data.description);
+        const jsonstring = res.data.slice(8).slice(0, -3);
+        console.log(jsonstring)
+        const data = JSON.parse(jsonstring);
+        console.log(data)
+        setRecommendation(data.recommendation);
+        setDiagnosis(data.diagnosis);
+        setObservation(data.observation);
       } catch (e) {
         console.error('Error caught:', e);
       } finally {
@@ -70,33 +67,54 @@ const DiagnosisPage = () => {
             <div className="subpart">Patient Age: {age}</div>
         </div> */}
         <div className="content">
-          <div className="patient-analyze">
-            {/*<ul>*/}
-            {/*  {observation?.length > 0 ? (*/}
-            {/*    observation.map((obs, index) => <li key={index}>{obs}</li>)*/}
-            {/*  ) : (*/}
-            {/*    <li>No observations available.</li>*/}
-            {/*  )}*/}
-            {/*</ul>*/}
-            {observation ? (
-                <p> {observation} </p>
-            ) : (
-                <p> No observations available.</p>
+          <div className='recommend'>
+            {recommendation ? (
+              <>
+              <h2>Recommendation</h2>
+              <p>{recommendation}</p>
+              </>
+            ):(
+              <p>
+                 No recommendations available.
+              </p>
             )}
           </div>
-          <div className="patient-analyze">
-            {/*<ul>*/}
-            {/*  {diagnosis?.length > 0 ? (*/}
-            {/*    diagnosis.map((diag, index) => <li key={index}>{diag}</li>)*/}
-            {/*  ) : (*/}
-            {/*    <li>No diagnosis available.</li>*/}
-            {/*  )}*/}
-            {/*</ul>*/}
-            {diagnosis ? (
-                <p> {diagnosis} </p>
-            ) : (
-                <p> No diagnosis available.</p>
-            )}
+          <div className="observation_block">
+            <div className="patient-analyze">
+              {/*<ul>*/}
+              {/*  {observation?.length > 0 ? (*/}
+              {/*    observation.map((obs, index) => <li key={index}>{obs}</li>)*/}
+              {/*  ) : (*/}
+              {/*    <li>No observations available.</li>*/}
+              {/*  )}*/}
+              {/*</ul>*/}
+              {observation ? (
+                <>
+                  <h2>Observation</h2>
+                  <p> {observation} </p>
+                  </>
+              ) : (
+                  <p> No observations available.</p>
+              )}
+            </div>
+            <div className="patient-analyze">
+              {/*<ul>*/}
+              {/*  {diagnosis?.length > 0 ? (*/}
+              {/*    diagnosis.map((diag, index) => <li key={index}>{diag}</li>)*/}
+              {/*  ) : (*/}
+              {/*    <li>No diagnosis available.</li>*/}
+              {/*  )}*/}
+              {/*</ul>*/}
+              {diagnosis ? (
+                <>
+                  <h2>Diagnosis</h2>
+                  <p> {diagnosis} </p>
+                </>
+                  
+              ) : (
+                  <p> No diagnosis available.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
