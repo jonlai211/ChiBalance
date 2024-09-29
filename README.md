@@ -1,4 +1,4 @@
-# PennApps_24f Tongue Analyzer
+# PennApps_ChiBalance
 
 ![Tongue Analyzer](/images/0.png)
 
@@ -19,9 +19,19 @@ We analyze tongue condition through a combination of visual inspection and data 
 
 ## Submission Track
 
-[Specify the ONE track you're submitting to]
+healthcare
 
-## Technologies Used
+## Prizes
+
+We're submitting for the following prizes:
+
+Most Creative Hack
+Best use of defang
+Best Use of Computer Vision (Sponsored by Roboflow)
+Most Technically Complex Hack
+Best Design
+Best Hardware Hack
+Best Next-Gen LLM-Powered Application (Sponsored by Tune)
 
 - Frontend: React.js
   1. Other: axios, crypto-js, react, react-dom, react-markdown, react-router-dom, react-scripts, react-webcam, web-vitals, webcam
